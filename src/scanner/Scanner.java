@@ -5,6 +5,8 @@ import java.io.*;
  * A new line would mean that the keyword is "if". An open parentheses would mean that the
  * conditional of the if statement will follow.
  *
+ *
+ * @author Akul Goyal
  */
 public class Scanner
 {
