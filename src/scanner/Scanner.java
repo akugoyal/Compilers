@@ -4,7 +4,8 @@ import java.io.*;
 
 /**
  * A new line would mean that the keyword is "if". An open parentheses would mean that the
- * conditional of the if statement will follow.
+ * conditional of the if statement will follow. New line is skipped over, parentheses is returned
+ * in the nextToken method.
  * <p>
  * The character you pass to eat will be the current character which you want to move on from.
  * This lookahead helps in being able to determine what the next token is, which then affects
