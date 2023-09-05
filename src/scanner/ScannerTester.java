@@ -21,7 +21,9 @@ public class ScannerTester
      */
     public static void main(String[] args) throws FileNotFoundException, ScanErrorException
     {
-        Scanner s = new Scanner(new FileReader("src/scanner/scannerTestAdvanced.txt"));
+        Scanner s =
+                new Scanner(new BufferedReader(new FileReader("src/scanner/scannerTestAdvanced" +
+                        ".txt")));
         while (s.hasNextToken())
         {
             System.out.println(s.nextToken());

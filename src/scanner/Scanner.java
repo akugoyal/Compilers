@@ -23,7 +23,7 @@ public class Scanner
 {
     //instance variables
     private boolean eof;
-    private Reader in;
+    private BufferedReader in;
     private char currentChar;
 
     /**
@@ -32,7 +32,7 @@ public class Scanner
      *
      * @param in the Reader object
      */
-    public Scanner(Reader in)
+    public Scanner(BufferedReader in)
     {
         this.in = in;
         eof = false;
@@ -86,7 +86,7 @@ public class Scanner
      */
     public static boolean isOperand(char s)
     {
-        return String.valueOf(s).matches("[=+*/%()-]");
+        return String.valueOf(s).matches("[-=+*/%():<>]");
     }
 
     /**
@@ -195,8 +195,12 @@ public class Scanner
         {
             throw new ScanErrorException("Illegal character found: " + currentChar);
         }
-        String token = String.valueOf(currentChar);
-        eat(currentChar);
+        String token = "";
+        while (hasNextToken() && isOperand(currentChar))
+        {
+            token += currentChar;
+            eat(currentChar);
+        }
         return new Token(token, TOKEN_TYPE.OPERAND);
     }
 
@@ -247,13 +251,29 @@ public class Scanner
             //Operand
             if (isOperand(currentChar))
             {
-                return scanOperand();
+                Token op = scanOperand();
+                if (op.getToken().length() >= 2 && op.getToken().substring(0, 2).equals("//"))
+                {
+                    while (currentChar != '\n' && currentChar != '\r')
+                    {
+                        eat(currentChar);
+                    }
+                    nextToken();
+                }
+                else
+                {
+                    return op;
+                }
             }
-
-            throw new ScanErrorException("Illegal character found when parsing: " + currentChar);
+            else
+            {
+                throw new ScanErrorException("Illegal character found when parsing: " +
+                        currentChar);
+            }
         }
         catch (ScanErrorException s)
         {
+            s.printStackTrace();
             //unknown = String.valueOf(currentChar);
             //eat(currentChar);
             System.out.println("UNKOWN: " + currentChar);
@@ -282,7 +302,7 @@ public class Scanner
 
         /**
          * An operand is defined as a non-empty sequence of characters that are valid operands:
-         * =, +, -, *, /, %, (, ).
+         * =, +, -, *, /, %, (, ), :, <, >.
          */
         OPERAND,
 
