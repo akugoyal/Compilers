@@ -8,6 +8,14 @@
  */
 package scanner;
 
+/**
+ * Class Token
+ * A Token object represents a token in the input string. Stores the token and its type. Is
+ * immutable. Override equals and hashCode methods.
+ *
+ * @author Akul Goyal
+ * @version 9-4-2023
+ */
 public final class Token
 {
     //instance variables
