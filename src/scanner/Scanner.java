@@ -14,6 +14,19 @@ public class Scanner
     private Reader in;
     private char currentChar;
 
+    public static enum TOKEN_TYPE
+    {
+        IDENTIFIER,
+
+        NUMBER,
+
+        OPERAND,
+
+        END_OF_FILE,
+
+        END_OF_LINE
+    }
+
     public Scanner(Reader in)
     {
         this.in = in;
@@ -38,7 +51,7 @@ public class Scanner
         }
     }
 
-    public boolean hasNext()
+    public boolean hasNextToken()
     {
         return !eof;
     }
@@ -60,29 +73,74 @@ public class Scanner
         }
     }
 
+    /**
+     * The isWhiteSpace method checks to see if the input is a white space character.
+     *
+     * @param s is the character to be checked
+     * @return true if the input is a white space character, false otherwise.
+     * @precondition s.length() == 1
+     */
+    private boolean isWhiteSpace(char s)
+    {
+        return String.valueOf(s).matches("[‘ ‘ ‘\t’ ‘\r’ ‘\n’]");
+    }
 
-    public Token nextToken()
+    private boolean isLetter(char s) {
+        return String.valueOf(s).toLowerCase().matches("[a-z A-Z]");
+    }
+
+    private boolean isDigit(char s)
+    {
+        return String.valueOf(s).matches("[0-9]");
+    }
+
+    private boolean isEndOfFile(char s)
+    {
+        return s == '.';
+    }
+
+    private Token scanNumber() throws ScanErrorException
+    {
+        if (!isDigit(currentChar)) {
+            throw new ScanErrorException("Found a non-digit character");
+        }
+        String token = "";
+        while (hasNextToken() && isDigit(currentChar))
+        {
+            token += currentChar;
+            eat(currentChar);
+        }
+        return new Token(token, TOKEN_TYPE.NUMBER);
+    }
+
+    /**public Token nextToken() throws ScanErrorException
     {
         while (hasNextToken() && isWhiteSpace(currentChar))
         {
             eat(currentChar);
         }
         //END_OF_FILE
-        if (!hasNextToken())
+        if (!hasNextToken() || isEndOfFile(currentChar))
         {
             //System.out.println("End of file reached");
-            return new Token("", TOKEN_TYPE.END_OF_FILE);
+            return new Token("END", TOKEN_TYPE.END_OF_FILE);
         }
 
-        //END_OF_SENTENCE
-        if (isSentenceTerminator(currentChar))
+        //End of line
+        if (currentChar == ';') {
+            return new Token(";", TOKEN_TYPE.END_OF_LINE);
+        }
+
+        //Number
+        if (isDigit(currentChar))
         {
-            //System.out.println("End of sentence reached");
-            Token token = new Token(currentChar, TOKEN_TYPE.END_OF_SENTENCE);
-            eat(currentChar);
-            return token;
+            scanNumber();
         }
 
+        //Identifier
+        if (currentChar >= ) {
+
+        }
         //END_OF_PHRASE
         if (isPhraseTerminator(currentChar))
         {
@@ -115,5 +173,11 @@ public class Scanner
         String token = "" + currentChar;
         eat(currentChar);
         return new Token(token, TOKEN_TYPE.UNKNOWN);
+    }**/
+
+    public static void main(String[] args) throws FileNotFoundException
+    {
+        Scanner s = new Scanner(new FileReader("test.txt"));
+        System.out.println(s.isLetter('a'));
     }
 }
