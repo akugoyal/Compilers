@@ -170,7 +170,7 @@ public class Scanner
      */
     private Token scanIdentifier() throws ScanErrorException
     {
-        if (!isLetter(currentChar) && !isDigit(currentChar))
+        if (!isLetter(currentChar))
         {
             throw new ScanErrorException("Found a non-letter and non-digit character: " +
                     currentChar);
