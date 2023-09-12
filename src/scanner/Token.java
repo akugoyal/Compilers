@@ -16,6 +16,9 @@ package scanner;
  * @author Akul Goyal
  * @version 9-4-2023
  */
+
+
+/**
 public final class Token
 {
     //instance variables
@@ -27,7 +30,7 @@ public final class Token
      *
      * @param token the token
      * @param type  the type of the token
-     */
+     * /
     public Token(String token, Scanner.TOKEN_TYPE type)
     {
         this.token = token;
@@ -38,7 +41,7 @@ public final class Token
      * Returns the type of the token.
      *
      * @return the type of the token
-     */
+     * /
     public Scanner.TOKEN_TYPE getType()
     {
         return type;
@@ -48,7 +51,7 @@ public final class Token
      * Returns the token.
      *
      * @return the value of the token
-     */
+     * /
     public String getToken()
     {
         return token;
@@ -58,7 +61,7 @@ public final class Token
      * Returns a string representation of the token.
      *
      * @return the type of the token followed by the value of the token in a String
-     */
+     * /
     public String toString()
     {
         return type + ": " + token;
@@ -71,10 +74,10 @@ public final class Token
      * @param obj the object to compare to
      * @return true if the token is equal to the object passed in
      * @precondition obj is an instance of Token
-     */
+     * /
     public boolean equals(Object obj)
     {
         return type == ((Token) obj).getType() && token.equals(((Token) obj).getToken());
     }
 }
-
+**/
