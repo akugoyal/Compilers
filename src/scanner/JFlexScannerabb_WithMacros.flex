@@ -31,19 +31,20 @@ return "END";
 /**
  * Pattern definitions
  */
-Identifier = \"[a-zA-Z]([0-9a-zA-Z])*\"
 Whitespace = [ \t\r\n]+
-Value = [^\",}{ \t\n\r]+
-Pair = ("\:") {Identifier}
+AlphanumericalValue = [\"]([a-zA-Z0-9 \t\r\n,+*-=\.\_\(\)/;])*[\"]
+NumericalValue = ([0-9])+
+Value = {AlphanumericalValue}|{NumericalValue}
+Identifier = [\"][a-z]([a-zA-Z0-9])*[\"]([ ])*[:]
 %%
 /**
  * lexical rules
  */
 [{]			        {return "Start of list";}
+[,] 			    {return "COMMA: " + yytext();}
 {Whitespace} 	        {/* eat whitespace */}
 {Identifier}	    {return "IDENTIFIER: " + yytext();}
-{Pair}			        {return "PAIR " + yytext().substring(1);}
-[,] 			    {return "COMMA: " + yytext();}
+{Value}			        {return "VALUE " + yytext();}
 [}]			        {return "End of list";}
 "//"[^\n]*      	{/* one-line comment */}
 .                   {return yytext() + " junk found";}
