@@ -42,9 +42,9 @@ Identifier = [\"][a-z]([a-zA-Z0-9])*[\"]([ ])*[:]
  */
 [{]			        {return "Start of list";}
 [,] 			    {return "COMMA: " + yytext();}
-{Whitespace} 	        {/* eat whitespace */}
+{Whitespace} 	    {/* eat whitespace */}
 {Identifier}	    {return "IDENTIFIER: " + yytext();}
-{Value}			        {return "VALUE " + yytext();}
+{Value}			    {return "VALUE " + yytext();}
 [}]			        {return "End of list";}
 "//"[^\n]*      	{/* one-line comment */}
 .                   {return yytext() + " junk found";}
