@@ -19,14 +19,14 @@ public class ScannerTester
      * @throws FileNotFoundException if the file to be read is not found
      * @throws ScanErrorException    if the Scanner encounters an error
      */
-    public static void main(String[] args) throws FileNotFoundException, IOException
+    public static void main(String[] args) throws FileNotFoundException, IOException, ScanErrorException
     {
         Scanner s =
-                new Scanner(new FileReader("src/scanner/TestJSonFile.txt"));
-        while (!s.yyatEOF())
+                new Scanner(new BufferedReader(new FileReader("src/scanner/scannerTestAdvanced" +
+                        ".txt")));
+        while (s.hasNextToken())
         {
             System.out.println(s.nextToken());
         }
-        System.out.println(s.nextToken());
     }
 }

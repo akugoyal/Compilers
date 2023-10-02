@@ -3,6 +3,8 @@ package scanner;
 /**
  * This file defines a simple lexer for the compilers course 
  * which uses regEx for lexical token specifications
+ * @author Akul Goyal, Gautam Bhooma
+ * 9/13/2023
  */
 
 import java.io.*;

@@ -9,11 +9,10 @@ package scanner;
  * which uses regEx for lexical token specifications
  */
 
-import java.io.*;
-
 
 @SuppressWarnings("fallthrough")
-public class Scanner {
+public class JFlexScanner
+{
 
   /** This character denotes the end of file. */
   public static final int YYEOF = -1;
@@ -293,7 +292,7 @@ public class Scanner {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  public Scanner(java.io.Reader in) {
+  public JFlexScanner(java.io.Reader in) {
     this.zzReader = in;
   }
 
