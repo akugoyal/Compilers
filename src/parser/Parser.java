@@ -1,7 +1,9 @@
 package parser;
 
 import scanner.*;
+import ast.*;
 
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -59,11 +61,11 @@ public class Parser
      * @return the integer that was parsed
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
-    private int parseNumber() throws ScanErrorException
+    private ast.Number parseNumber() throws ScanErrorException
     {
         int num = Integer.parseInt(current.getToken());
         eat(Integer.toString(num));
-        return num;
+        return new ast.Number(num);
     }
 
     /**
@@ -71,39 +73,44 @@ public class Parser
      *
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
-    public void parseStatement() throws ScanErrorException
+    public Statement parseStatement() throws ScanErrorException
     {
         if (current.getToken().equals("WRITELN"))
         {
             eat("WRITELN");
             eat("(");
-            System.out.println(parseExpr());
+            Expression e = parseExpr();
             eat(")");
             eat(";");
+            return new Writeln(e);
         }
         else if (current.getToken().equals("BEGIN"))
         {
             eat("BEGIN");
+            Block b = new Block(new LinkedList<Statement>());
             while (!current.getToken().equals("END"))
             {
-                parseStatement();
+                b.add(parseStatement());
             }
             eat("END");
             eat(";");
+            return b;
         }
         else if (current.getType() == Scanner.TOKEN_TYPE.IDENTIFIER)
         {
-            String var = current.getToken();
+            Variable var = new Variable(current.getToken());
             eat(current.getToken());
             eat(":=");
-            int v = parseExpr();
-            vars.put(var, v);
+            Expression e = parseExpr();
+            //vars.put(var, e);
             eat(";");
+            return new Assignment(var.getName(), e);
         }
         if (current.getToken().equals("EOF"))
         {
             eat("EOF");
         }
+        throw new ScanErrorException("Unrecognized input: " + current.getToken());
     }
 
     /**
@@ -113,26 +120,26 @@ public class Parser
      * @return the integer evaluation of the factor parsed
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
-    private int parseFactor() throws ScanErrorException
+    private Expression parseFactor() throws ScanErrorException
     {
         if (current.getToken().equals("("))
         {
             eat("(");
-            int factor = this.parseExpr();
+            Expression e = this.parseExpr();
             eat(")");
-            return factor;
+            return e;
         }
         else if (current.getToken().equals("-"))
         {
             eat("-");
-            int factor = -1 * parseExpr();
-            return factor;
+            Expression e = new BinOp("-", new ast.Number(0), parseExpr());
+            return e;
         }
         else if (current.getType() == Scanner.TOKEN_TYPE.IDENTIFIER)
         {
-            String var = current.getToken();
+            Variable var = new Variable(current.getToken());
             eat(current.getToken());
-            return vars.get(var);
+            return var;
         }
         return this.parseNumber();
     }
@@ -143,29 +150,29 @@ public class Parser
      * @return the integer evaluation of the term parsed
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
-    private int parseTerm() throws ScanErrorException
+    private Expression parseTerm() throws ScanErrorException
     {
-        int factor = parseFactor();
+        Expression e = parseFactor();
         while (current.getToken().equals("*") || current.getToken().equals("/") ||
                 current.getToken().equals("mod"))
         {
             if (current.getToken().equals("*"))
             {
                 eat("*");
-                factor *= parseFactor();
+                e = new BinOp("*", e, parseFactor());
             }
             else if (current.getToken().equals("/"))
             {
                 eat("/");
-                factor /= parseFactor();
+                e = new BinOp("/", e, parseFactor());
             }
             else if (current.getToken().equals("mod"))
             {
                 eat("mod");
-                factor %= parseFactor();
+                e = new BinOp("%", e, parseFactor());
             }
         }
-        return factor;
+        return e;
     }
 
     /**
@@ -174,22 +181,22 @@ public class Parser
      * @return the integer evaluation of the expression parsed
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
-    private int parseExpr() throws ScanErrorException
+    private Expression parseExpr() throws ScanErrorException
     {
-        int term = parseTerm();
+        Expression e = parseTerm();
         while (current.getToken().equals("+") || current.getToken().equals("-"))
         {
             if (current.getToken().equals("+"))
             {
                 eat("+");
-                term += parseTerm();
+                e = new BinOp("+", e, parseTerm());
             }
             else if (current.getToken().equals("-"))
             {
                 eat("-");
-                term -= parseTerm();
+                e = new BinOp("-", e, parseTerm());
             }
         }
-        return term;
+        return e;
     }
 }
