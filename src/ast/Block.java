@@ -1,4 +1,6 @@
 package ast;
+import environment.Environment;
+
 import java.util.*;
 
 public class Block extends Statement{
@@ -11,5 +13,13 @@ public class Block extends Statement{
     public Statement add(Statement s) {
         stmts.add(s);
         return s;
+    }
+
+    @Override
+    public void exec(Environment env) throws InvalidOperator
+    {
+        for (Statement s: stmts) {
+            s.exec(env);
+        }
     }
 }

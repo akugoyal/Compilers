@@ -1,5 +1,7 @@
 package parser;
 
+import ast.InvalidOperator;
+import environment.Environment;
 import scanner.*;
 
 import java.io.*;
@@ -21,13 +23,14 @@ public class ParserTester
      * @throws ScanErrorException    if the Scanner object encounters an invalid character or an
      *                               error
      */
-    public static void main(String[] args) throws FileNotFoundException, ScanErrorException
+    public static void main(String[] args) throws FileNotFoundException, ScanErrorException, InvalidOperator
     {
-        Scanner s = new Scanner(new BufferedReader(new FileReader("src/parser/parserTest4.txt")));
+        Scanner s = new Scanner(new BufferedReader(new FileReader("src/parser/parserTest3.txt")));
         Parser p = new Parser(s);
+        Environment env = new Environment();
         while (s.hasNextToken())
         {
-            p.parseStatement();
+            p.parseStatement().exec(env);
         }
     }
 }
