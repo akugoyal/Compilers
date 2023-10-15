@@ -9,11 +9,10 @@ BEGIN
 		WRITELN(y);
 	END;
 	x := 0;
-	WHILE x < 10 DO
-	BEGIN
-		WRITELN(x);
-		x := x + 1;
-	END;
-	
+    WHILE x < 10 DO
+    	BEGIN
+    		WRITELN(x);
+    		x := x + 1;
+    	END;
 END;
 .

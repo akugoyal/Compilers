@@ -16,7 +16,7 @@ public class Block extends Statement{
     }
 
     @Override
-    public void exec(Environment env) throws InvalidOperator
+    public void exec(Environment env) throws InvalidOperator, BreakException
     {
         for (Statement s: stmts) {
             s.exec(env);

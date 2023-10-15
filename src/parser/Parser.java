@@ -2,7 +2,6 @@ package parser;
 
 import scanner.*;
 import ast.*;
-
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
@@ -19,7 +18,6 @@ public class Parser
 {
     Scanner s;
     Token current;
-    Map<String, Integer> vars;
 
     /**
      * Creates a Parser object with a Scanner object and sets the look ahead to the next token.
@@ -31,7 +29,6 @@ public class Parser
     {
         s = sc;
         current = s.nextToken();
-        vars = new HashMap<String, Integer>();
     }
 
     /**
@@ -50,15 +47,15 @@ public class Parser
         }
         else
         {
-            throw new IllegalArgumentException("Illegal character - expected" +
+            throw new IllegalArgumentException("Illegal character - expected " +
                     current.getToken() + " and found " + c);
         }
     }
 
     /**
-     * Parses an integer and returns it.
+     * Parses a Number and returns it.
      *
-     * @return the integer that was parsed
+     * @return the Number that was parsed
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
     private ast.Number parseNumber() throws ScanErrorException
@@ -69,13 +66,30 @@ public class Parser
     }
 
     /**
-     * Parses a line of the file and executes it. Stores variables in a Map object.
+     * Parses a Statement and returns it. Statements can be continue, break, block (begin/end),
+     * if, while, for, variable assignment, or writeln constructs.
      *
+     * @return the Statement that was parsed
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
     public Statement parseStatement() throws ScanErrorException
     {
-        if (current.getToken().equals("WRITELN"))
+        //Continue
+        if (current.getToken().equals("CONTINUE")) {
+            eat("CONTINUE");
+            eat(";");
+            return new Continue();
+        }
+
+        //Break
+        else if (current.getToken().equals("BREAK")) {
+            eat("BREAK");
+            eat(";");
+            return new Break();
+        }
+
+        //Writeln
+        else if (current.getToken().equals("WRITELN"))
         {
             eat("WRITELN");
             eat("(");
@@ -84,10 +98,14 @@ public class Parser
             eat(";");
             return new Writeln(e);
         }
+
+        //Block (begin/end)
         else if (current.getToken().equals("BEGIN"))
         {
             eat("BEGIN");
             Block b = new Block(new LinkedList<Statement>());
+
+            //Add statements to block until END
             while (!current.getToken().equals("END"))
             {
                 b.add(parseStatement());
@@ -96,32 +114,95 @@ public class Parser
             eat(";");
             return b;
         }
+
+        //Identifier - includes if, while, for, and variable assignment
         else if (current.getType() == Scanner.TOKEN_TYPE.IDENTIFIER)
         {
-            Variable var = new Variable(current.getToken());
-            eat(current.getToken());
-            eat(":=");
-            Expression e = parseExpr();
-            //vars.put(var, e);
-            eat(";");
-            return new Assignment(var.getName(), e);
+            //If
+            if (current.getToken().equals("IF")) {
+                eat("IF");
+                Condition c = parseCondition();
+                eat("THEN");
+                return new If(c, parseStatement());
+            }
+
+            //While
+            else if (current.getToken().equals("WHILE")) {
+                eat("WHILE");
+                Condition c = parseCondition();
+                eat("DO");
+                return new While(c, parseStatement());
+            }
+
+            //For
+            else if (current.getToken().equals("FOR")) {
+                eat("FOR");
+                Assignment a = parseAssignment();
+                eat("TO");
+                Expression exp = parseExpr();
+                eat("DO");
+                return new For(a, exp, parseStatement());
+            }
+
+            //Variable assignment
+            else
+            {
+                Assignment a = parseAssignment();
+                eat(";");
+                return a;
+            }
         }
+
+        //EOF
         if (current.getToken().equals("EOF"))
         {
             eat("EOF");
         }
+
+        //If the input does not match one of the constructs expected
         throw new ScanErrorException("Unrecognized input: " + current.getToken());
     }
 
     /**
-     * Parses a factor containing a parentheses, variable, minus sign, or number and returns it.
-     * Can handle variables.
+     * Parses a variable assignment and returns an Assignment object.
      *
-     * @return the integer evaluation of the factor parsed
-     * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
+     * @return the Assignment object containing the variable name and the expression to be assigned
+     * @throws ScanErrorException if the eat method encounters an invalid character or an error
+     */
+    private Assignment parseAssignment() throws ScanErrorException
+    {
+        Variable var = new Variable(current.getToken());
+        eat(current.getToken());
+        eat(":=");
+        Expression e = parseExpr();
+        return new Assignment(var.getName(), e);
+    }
+
+    /**
+     * Parses a condition containing two expressions and a comparison operator and returns a
+     * Condition object. Can handle variables.
+     *
+     * @return the Condition object containing the two expressions and the comparison operator
+     * @throws ScanErrorException if the eat method encounters an invalid character or an error
+     */
+    private Condition parseCondition() throws ScanErrorException
+    {
+        Expression exp1 = parseExpr();
+        String op = current.getToken();
+        eat(op);
+        Expression exp2 = parseExpr();
+        return new Condition(exp1, exp2, op);
+    }
+
+    /**
+     * Parses a factor containing  parentheses, variables, or binary operators and returns it.
+     *
+     * @return an Expression object representing the factor parsed.
+     * @throws ScanErrorException if the eat method encounters an invalid character or an error
      */
     private Expression parseFactor() throws ScanErrorException
     {
+        //Parentheses
         if (current.getToken().equals("("))
         {
             eat("(");
@@ -129,74 +210,96 @@ public class Parser
             eat(")");
             return e;
         }
+
+        //Subtraction
         else if (current.getToken().equals("-"))
         {
             eat("-");
             Expression e = new BinOp("-", new ast.Number(0), parseExpr());
             return e;
         }
+
+        //Variable
         else if (current.getType() == Scanner.TOKEN_TYPE.IDENTIFIER)
         {
             Variable var = new Variable(current.getToken());
             eat(current.getToken());
             return var;
         }
+
+        //Number
         return this.parseNumber();
     }
 
     /**
      * Parses a term containing a multiplication, division, mod, or factor and returns it.
      *
-     * @return the integer evaluation of the term parsed
-     * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
+     * @return an Expression object representing the term parsed.
+     * @throws ScanErrorException if the eat method encounters an invalid character or an error
      */
     private Expression parseTerm() throws ScanErrorException
     {
         Expression e = parseFactor();
+
+        //Multiplication, division, or mod
         while (current.getToken().equals("*") || current.getToken().equals("/") ||
                 current.getToken().equals("mod"))
         {
+
+            //Multiplication
             if (current.getToken().equals("*"))
             {
                 eat("*");
                 e = new BinOp("*", e, parseFactor());
             }
+
+            //Division
             else if (current.getToken().equals("/"))
             {
                 eat("/");
                 e = new BinOp("/", e, parseFactor());
             }
+
+            //Mod
             else if (current.getToken().equals("mod"))
             {
                 eat("mod");
-                e = new BinOp("%", e, parseFactor());
+                e = new BinOp("mod", e, parseFactor());
             }
         }
+
+        //Return the expression
         return e;
     }
 
     /**
      * Parses an expression containing an addition, subtraction, or a term and returns it.
      *
-     * @return the integer evaluation of the expression parsed
+     * @return an Expression object representing the expression parsed
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
     private Expression parseExpr() throws ScanErrorException
     {
         Expression e = parseTerm();
+
+        //Addition or subtraction
         while (current.getToken().equals("+") || current.getToken().equals("-"))
         {
+            //Addition
             if (current.getToken().equals("+"))
             {
                 eat("+");
                 e = new BinOp("+", e, parseTerm());
             }
+            //Subtraction
             else if (current.getToken().equals("-"))
             {
                 eat("-");
                 e = new BinOp("-", e, parseTerm());
             }
         }
+
+        //Return the expression
         return e;
     }
 }
