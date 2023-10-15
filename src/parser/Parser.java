@@ -2,6 +2,7 @@ package parser;
 
 import scanner.*;
 import ast.*;
+
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.HashMap;
  * write statements in Pascal.
  *
  * @author Akul Goyal
- * @version 10/3/2023
+ * @version 10/14/2023
  */
 public class Parser
 {
@@ -75,14 +76,16 @@ public class Parser
     public Statement parseStatement() throws ScanErrorException
     {
         //Continue
-        if (current.getToken().equals("CONTINUE")) {
+        if (current.getToken().equals("CONTINUE"))
+        {
             eat("CONTINUE");
             eat(";");
             return new Continue();
         }
 
         //Break
-        else if (current.getToken().equals("BREAK")) {
+        else if (current.getToken().equals("BREAK"))
+        {
             eat("BREAK");
             eat(";");
             return new Break();
@@ -119,7 +122,8 @@ public class Parser
         else if (current.getType() == Scanner.TOKEN_TYPE.IDENTIFIER)
         {
             //If
-            if (current.getToken().equals("IF")) {
+            if (current.getToken().equals("IF"))
+            {
                 eat("IF");
                 Condition c = parseCondition();
                 eat("THEN");
@@ -127,7 +131,8 @@ public class Parser
             }
 
             //While
-            else if (current.getToken().equals("WHILE")) {
+            else if (current.getToken().equals("WHILE"))
+            {
                 eat("WHILE");
                 Condition c = parseCondition();
                 eat("DO");
@@ -135,7 +140,8 @@ public class Parser
             }
 
             //For
-            else if (current.getToken().equals("FOR")) {
+            else if (current.getToken().equals("FOR"))
+            {
                 eat("FOR");
                 Assignment a = parseAssignment();
                 eat("TO");

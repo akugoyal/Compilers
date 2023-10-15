@@ -1,16 +1,16 @@
 package parser;
 
-import ast.BreakException;
-import ast.InvalidOperator;
-import environment.Environment;
+import ast.*;
+import environment.*;
 import scanner.*;
+
 import java.io.*;
 
 /**
  * ParserTester is a class to test a Parser object.
  *
  * @author Akul Goyal
- * @version 10/3/2023
+ * @version 10/14/2023
  */
 public class ParserTester
 {
@@ -22,11 +22,12 @@ public class ParserTester
      * @throws FileNotFoundException if the input file to be parsed is not found
      * @throws ScanErrorException    if the Scanner object encounters an invalid character or an
      *                               error
-     * @throws InvalidOperator       if the Parser object encounters an invalid relative operator
+     * @throws InvalidOperator       if the Parser object encounters an invalid relational operator
      */
-    public static void main(String[] args) throws FileNotFoundException, ScanErrorException, InvalidOperator
+    public static void main(String[] args) throws FileNotFoundException, ScanErrorException,
+            InvalidOperator
     {
-        Scanner s = new Scanner(new BufferedReader(new FileReader("src/parser/parserTest8.txt")));
+        Scanner s = new Scanner(new BufferedReader(new FileReader("src/parser/parserTest7.txt")));
         Parser p = new Parser(s);
         Environment env = new Environment();
         while (s.hasNextToken())
@@ -34,9 +35,16 @@ public class ParserTester
             try
             {
                 p.parseStatement().exec(env);
-            } catch (BreakException b) {
+            }
+            catch (BreakException b)
+            {
                 System.out.println("BREAK not inside loop");
                 b.printStackTrace();
+            }
+            catch (ContinueException c)
+            {
+                System.out.println("CONTINUE not inside loop");
+                c.printStackTrace();
             }
         }
     }
