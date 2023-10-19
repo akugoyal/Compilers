@@ -27,7 +27,7 @@ public class ParserTester
     public static void main(String[] args) throws FileNotFoundException, ScanErrorException,
             InvalidOperator
     {
-        Scanner s = new Scanner(new BufferedReader(new FileReader("src/parser/parserTest7.txt")));
+        Scanner s = new Scanner(new BufferedReader(new FileReader("src/parser/parserTest6.txt")));
         Parser p = new Parser(s);
         Environment env = new Environment();
         while (s.hasNextToken())
