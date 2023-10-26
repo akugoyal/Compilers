@@ -1,5 +1,8 @@
 package environment;
 
+import ast.ProcedureCall;
+import ast.ProcedureDeclaration;
+
 import java.util.HashMap;
 
 /**
@@ -13,6 +16,8 @@ public class Environment
 {
     //HashMap to store the variables and their values
     private HashMap<String, Integer> vars;
+    private HashMap<String, ProcedureDeclaration> procs;
+    private Environment parent;
 
     /**
      * Constructor initializes an empty HashMap for maintaining variables
@@ -20,6 +25,12 @@ public class Environment
     public Environment()
     {
         vars = new HashMap<String, Integer>();
+        procs = new HashMap<String, ProcedureDeclaration>();
+        parent = null;
+    }
+
+    public Environment(Environment e) {
+        parent = e;
     }
 
     /**
@@ -42,5 +53,13 @@ public class Environment
     public int getVariable(String var)
     {
         return vars.get(var);
+    }
+
+    public void setProcedure(String name, ProcedureDeclaration p) {
+        procs.put(name, p);
+    }
+
+    public ProcedureDeclaration getProcedure(String name) {
+        return procs.get(name);
     }
 }

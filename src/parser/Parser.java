@@ -4,8 +4,6 @@ import scanner.*;
 import ast.*;
 
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * The Parser class is a class that parses a file by using a Scanner object to create a token
@@ -73,7 +71,7 @@ public class Parser
      * @return the Statement that was parsed
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
-    public Statement parseStatement() throws ScanErrorException
+    private Statement parseStatement() throws ScanErrorException
     {
         //Continue
         if (current.getToken().equals("CONTINUE"))
@@ -307,5 +305,22 @@ public class Parser
 
         //Return the expression
         return e;
+    }
+
+    public Program parseProgram() throws ScanErrorException
+    {
+        LinkedList<ProcedureDeclaration> procs = new LinkedList<ProcedureDeclaration>();
+        while (current.getToken().equals("PROCEDURE")) {
+            String name = current.getToken();
+            eat(name);
+            eat("(");
+            eat(")");
+            eat(";");
+            Statement s = parseStatement();
+            procs.add(new ProcedureDeclaration(name, s));
+        }
+        Block b = (Block) parseStatement();
+        eat(".");
+        return new Program(procs, b);
     }
 }
