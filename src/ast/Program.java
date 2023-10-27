@@ -17,7 +17,7 @@ public class Program
         stmts = stmt;
     }
 
-    public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException
+    public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException, ArgumentMismatchException
     {
         for (ProcedureDeclaration p: procs) {
             env.setProcedure(p.getName(), p);

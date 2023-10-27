@@ -38,7 +38,7 @@ public class For extends Statement
      * @throws ContinueException if a continue statement is executed
      */
     @Override
-    public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException
+    public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException, ArgumentMismatchException
     {
         var.exec(env);
         for (int i = env.getVariable(var.getVar()); i < end.eval(env); i++)

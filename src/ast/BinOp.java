@@ -37,7 +37,7 @@ public class BinOp extends Expression
      * @throws InvalidOperator if the operator is not valid
      */
     @Override
-    public int eval(Environment env) throws InvalidOperator, ContinueException, BreakException
+    public int eval(Environment env) throws InvalidOperator, ContinueException, BreakException, ArgumentMismatchException
     {
         switch (op)
         {

@@ -152,9 +152,17 @@ public class Parser
                 String n = current.getToken();
                 eat(n);
                 eat("(");
+                LinkedList<Expression> p = new LinkedList<Expression>();
+                while(!current.getToken().equals(")")) {
+                    p.add(parseExpr());
+                    if (!current.getToken().equals(")"))
+                    {
+                        eat(",");
+                    }
+                }
                 eat(")");
                 eat(";");
-                return new Assignment("ignore", new ProcedureCall(n));
+                return new Assignment("ignore", new ProcedureCall(n, p));
 
             }
             //Variable assignment
@@ -324,10 +332,19 @@ public class Parser
             String name = current.getToken();
             eat(name);
             eat("(");
+            LinkedList<String> p = new LinkedList<String>();
+            while(!current.getToken().equals(")")) {
+                p.add(current.getToken());
+                eat(current.getToken());
+                if (!current.getToken().equals(")"))
+                {
+                    eat(",");
+                }
+            }
             eat(")");
             eat(";");
             Statement s = parseStatement();
-            procs.add(new ProcedureDeclaration(name, s));
+            procs.add(new ProcedureDeclaration(name, s, p));
         }
         if (procs.size() == 0) {
             LinkedList<Statement> stmts = new LinkedList<Statement>();

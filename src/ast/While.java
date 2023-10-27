@@ -33,7 +33,7 @@ public class While extends Statement
      * @throws ContinueException if a continue statement is executed
      */
     @Override
-    public void exec(Environment env) throws InvalidOperator, ContinueException, BreakException
+    public void exec(Environment env) throws InvalidOperator, ContinueException, BreakException, ArgumentMismatchException
     {
         while (cond.eval(env) == 1)
         {

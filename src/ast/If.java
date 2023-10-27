@@ -34,7 +34,7 @@ public class If extends Statement
      * @throws ContinueException if a continue statement is executed
      */
     @Override
-    public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException
+    public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException, ArgumentMismatchException
     {
         if (cond.eval(env) == 1)
         {

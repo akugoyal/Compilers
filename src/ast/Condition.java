@@ -37,7 +37,7 @@ public class Condition extends Expression
      * @throws InvalidOperator If the boolean operator is not valid
      */
     @Override
-    public int eval(Environment env) throws InvalidOperator, ContinueException, BreakException
+    public int eval(Environment env) throws InvalidOperator, ContinueException, BreakException, ArgumentMismatchException
     {
         switch (op)
         {

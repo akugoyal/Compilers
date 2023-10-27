@@ -7,19 +7,25 @@ public class ProcedureDeclaration extends Statement
 {
     private String name;
     private Statement stmt;
+    private List<String> params;
 
-    public ProcedureDeclaration(String n, Statement s) {
+    public ProcedureDeclaration(String n, Statement s, List<String> p) {
         name = n;
         stmt = s;
+        params = p;
     }
 
     @Override
-    public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException
+    public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException, ArgumentMismatchException
     {
         stmt.exec(env);
     }
 
     public String getName() {
         return name;
+    }
+
+    public List<String> getParams() {
+        return params;
     }
 }

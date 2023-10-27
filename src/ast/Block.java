@@ -45,7 +45,7 @@ public class Block extends Statement
      * @throws BreakException  if a break statement is executed
      */
     @Override
-    public void exec(Environment env) throws InvalidOperator, BreakException
+    public void exec(Environment env) throws InvalidOperator, BreakException, ArgumentMismatchException
     {
         for (Statement s : stmts)
         {
