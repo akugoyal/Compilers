@@ -24,28 +24,20 @@ public class ParserTester
      *                               error
      * @throws InvalidOperator       if the Parser object encounters an invalid relational operator
      */
-    public static void main(String[] args) throws FileNotFoundException, ScanErrorException,
-            InvalidOperator
+    public static void main(String[] args) throws FileNotFoundException, ScanErrorException
     {
-        Scanner s = new Scanner(new BufferedReader(new FileReader("src/parser/parserTest6.txt")));
+        Scanner s =
+                new Scanner(new BufferedReader(new FileReader("src/parser/tests" +
+                        "/parserTest.txt")));
+//                new Scanner(new BufferedReader(new FileReader("src/parser/tests/procedureTest0" +
+//                        ".txt")));
         Parser p = new Parser(s);
         Environment env = new Environment();
-        while (s.hasNextToken())
-        {
-            try
-            {
-                p.parseStatement().exec(env);
-            }
-            catch (BreakException b)
-            {
-                System.out.println("BREAK not inside loop");
-                b.printStackTrace();
-            }
-            catch (ContinueException c)
-            {
-                System.out.println("CONTINUE not inside loop");
-                c.printStackTrace();
-            }
+        Program prog = p.parseProgram();
+        try {
+            prog.exec(env);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

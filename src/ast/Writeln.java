@@ -28,7 +28,7 @@ public class Writeln extends Statement
      * @param env the environment in which the statement is executed
      * @throws InvalidOperator if the Expression contains an invalid operator
      */
-    public void exec(Environment env) throws InvalidOperator
+    public void exec(Environment env) throws InvalidOperator, ContinueException, BreakException
     {
         System.out.println(exp.eval(env));
     }

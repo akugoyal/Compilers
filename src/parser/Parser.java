@@ -146,8 +146,17 @@ public class Parser
                 Expression exp = parseExpr();
                 eat("DO");
                 return new For(a, exp, parseStatement());
-            }
+            } else if (current.getToken().equals("ignore")) {
+                eat("ignore");
+                eat(":=");
+                String n = current.getToken();
+                eat(n);
+                eat("(");
+                eat(")");
+                eat(";");
+                return new Assignment("ignore", new ProcedureCall(n));
 
+            }
             //Variable assignment
             else
             {
@@ -311,6 +320,7 @@ public class Parser
     {
         LinkedList<ProcedureDeclaration> procs = new LinkedList<ProcedureDeclaration>();
         while (current.getToken().equals("PROCEDURE")) {
+            eat("PROCEDURE");
             String name = current.getToken();
             eat(name);
             eat("(");
@@ -319,8 +329,17 @@ public class Parser
             Statement s = parseStatement();
             procs.add(new ProcedureDeclaration(name, s));
         }
+        if (procs.size() == 0) {
+            LinkedList<Statement> stmts = new LinkedList<Statement>();
+            while (s.hasNextToken())
+            {
+                stmts.add(parseStatement());
+            }
+            eat("EOF");
+            return new Program(stmts);
+        }
         Block b = (Block) parseStatement();
-        eat(".");
+        eat("EOF");
         return new Program(procs, b);
     }
 }

@@ -52,7 +52,16 @@ public class Environment
      */
     public int getVariable(String var)
     {
-        return vars.get(var);
+        Integer v = vars.get(var);
+        if (v == null) {
+            if (parent == null) {
+                return 0;
+            } else {
+                return parent.getVariable(var);
+            }
+        } else {
+            return v;
+        }
     }
 
     public void setProcedure(String name, ProcedureDeclaration p) {
@@ -60,6 +69,15 @@ public class Environment
     }
 
     public ProcedureDeclaration getProcedure(String name) {
-        return procs.get(name);
+        ProcedureDeclaration p = procs.get(name);
+        if (p == null) {
+            if (parent == null) {
+                return null;
+            } else {
+                return parent.getProcedure(name);
+            }
+        } else {
+            return p;
+        }
     }
 }

@@ -18,4 +18,8 @@ public class ProcedureDeclaration extends Statement
     {
         stmt.exec(env);
     }
+
+    public String getName() {
+        return name;
+    }
 }

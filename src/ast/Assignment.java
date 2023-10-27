@@ -33,9 +33,14 @@ public class Assignment extends Statement
      * @throws InvalidOperator if the expression contains invalid relational operators
      */
     @Override
-    public void exec(Environment env) throws InvalidOperator
+    public void exec(Environment env) throws InvalidOperator, ContinueException, BreakException
     {
-        env.setVariable(var, exp.eval(env));
+        if (!var.equals("ignore"))
+        {
+            env.setVariable(var, exp.eval(env));
+        } else {
+            env.getProcedure(((ProcedureCall) exp).getName()).exec(env);
+        }
     }
 
     /**
