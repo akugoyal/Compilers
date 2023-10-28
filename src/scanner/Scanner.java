@@ -275,6 +275,7 @@ public class Scanner
                         return op;
                     }
                 }
+
                 else
                 {
                     throw new ScanErrorException("Illegal character found when parsing: " +
@@ -285,14 +286,11 @@ public class Scanner
         catch (ScanErrorException s)
         {
             s.printStackTrace();
-            //unknown = String.valueOf(currentChar);
-            //eat(currentChar);
             System.out.println("UNKOWN: " + currentChar);
             System.exit(1);
         }
 
         return null;
-        //return new Token(unknown, TOKEN_TYPE.UNKNOWN);
     }
 
     /**
