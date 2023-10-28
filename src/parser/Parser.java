@@ -158,10 +158,10 @@ public class Parser
                 while(!current.getToken().equals(")")) {
                     Expression exp = parseExpr();
                     params.add(exp);
-                    if (!current.getToken().equals(")"))
-                    {
-                        eat(",");
-                    }
+//                    if (!current.getToken().equals(")"))
+//                    {
+//                        eat(",");
+//                    }
                 }
                 eat(")");
                 eat(";");
@@ -338,10 +338,10 @@ public class Parser
             while(!current.getToken().equals(")")) {
                 p.add(current.getToken());
                 eat(current.getToken());
-                if (!current.getToken().equals(")"))
-                {
-                    eat(",");
-                }
+//                if (!current.getToken().equals(")"))
+//                {
+//                    eat(",");
+//                }
             }
             eat(")");
             eat(";");

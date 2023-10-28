@@ -5,6 +5,7 @@ WRITELN(w);
 WRITELN(z);
 x := x + y;
 END;
+
 BEGIN
 x := 2;
 y := x + 1;

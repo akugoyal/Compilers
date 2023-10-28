@@ -276,6 +276,10 @@ public class Scanner
                     }
                 }
 
+                if (currentChar == ',') {
+                    eat(',');
+                    return nextToken();
+                }
                 else
                 {
                     throw new ScanErrorException("Illegal character found when parsing: " +
