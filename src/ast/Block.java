@@ -56,6 +56,8 @@ public class Block extends Statement
             catch (ContinueException c)
             {
                 break;
+            } catch (ExitException ex) {
+                return;
             }
         }
     }

@@ -24,7 +24,12 @@ public class Program
         }
         for (Statement s : stmts)
         {
-            s.exec(env);
+            try
+            {
+                s.exec(env);
+            } catch (ExitException ex) {
+                return;
+            }
         }
     }
 }

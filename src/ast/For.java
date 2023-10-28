@@ -44,7 +44,12 @@ public class For extends Statement
         for (int i = env.getVariable(var.getVar()); i < end.eval(env); i++)
         {
             env.setVariable(var.getVar(), i);
-            stmt.exec(env);
+            try
+            {
+                stmt.exec(env);
+            } catch (ExitException ex) {
+                return;
+            }
         }
     }
 }

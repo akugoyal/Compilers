@@ -44,6 +44,8 @@ public class While extends Statement
             catch (BreakException b)
             {
                 break;
+            } catch (ExitException ex) {
+                return;
             }
         }
     }

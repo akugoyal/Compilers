@@ -19,5 +19,5 @@ public abstract class Statement
      * @throws ContinueException if a continue statement is executed
      */
     public abstract void exec(Environment env) throws InvalidOperator, BreakException,
-            ContinueException, ArgumentMismatchException;
+            ContinueException, ArgumentMismatchException, ExitException;
 }

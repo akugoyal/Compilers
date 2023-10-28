@@ -38,7 +38,12 @@ public class If extends Statement
     {
         if (cond.eval(env) == 1)
         {
-            then.exec(env);
+            try
+            {
+                then.exec(env);
+            } catch (ExitException ex) {
+                return;
+            }
         }
     }
 }

@@ -75,8 +75,13 @@ public class Parser
      */
     private Statement parseStatement() throws ScanErrorException
     {
+        if (current.getToken().equals("EXIT")) {
+            eat("EXIT");
+            eat(";");
+            return new Exit();
+        }
         //Continue
-        if (current.getToken().equals("CONTINUE"))
+        else if (current.getToken().equals("CONTINUE"))
         {
             eat("CONTINUE");
             eat(";");

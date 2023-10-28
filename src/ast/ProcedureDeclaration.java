@@ -16,9 +16,14 @@ public class ProcedureDeclaration extends Statement
     }
 
     @Override
-    public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException, ArgumentMismatchException
+    public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException,
+            ArgumentMismatchException
     {
-        stmt.exec(env);
+        try
+        {
+            stmt.exec(env);
+        } catch (ExitException ex) {
+        }
     }
 
     public String getName() {
