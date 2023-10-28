@@ -7,9 +7,9 @@ public class Program
     private List<ProcedureDeclaration> procs;
     private List<Statement> stmts = new LinkedList<Statement>();
 
-    public Program(List<ProcedureDeclaration> p, Block b) {
+    public Program(List<ProcedureDeclaration> p, Statement stmt) {
         procs = p;
-        stmts.add(b);
+        stmts.add(stmt);
     }
 
     public Program(List<Statement> stmt) {

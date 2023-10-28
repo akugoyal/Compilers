@@ -245,9 +245,20 @@ public class Parser
         //Variable
         else if (current.getType() == Scanner.TOKEN_TYPE.IDENTIFIER)
         {
-            Variable var = new Variable(current.getToken());
-            eat(current.getToken());
-            return var;
+            String name = current.getToken();
+            eat(name);
+            LinkedList<Expression> params = new LinkedList<Expression>();
+            if (current.getToken().equals("("))
+            {
+                eat("(");
+                while (!current.getToken().equals(")"))
+                {
+                    params.add(parseExpr());
+                }
+                eat(")");
+                return new ProcedureCall(name, params);
+            }
+            return new Variable(name);
         }
 
         //Number
@@ -357,8 +368,8 @@ public class Parser
             eat("EOF");
             return new Program(stmts);
         }
-        Block b = (Block) parseStatement();
+        Statement stmt = parseStatement();
         eat("EOF");
-        return new Program(procs, b);
+        return new Program(procs, stmt);
     }
 }

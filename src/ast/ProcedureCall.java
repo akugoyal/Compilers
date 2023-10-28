@@ -5,7 +5,6 @@ import java.util.*;
 
 public class ProcedureCall extends Expression{
     private String name;
-    private Environment e;
     private List<Expression> params;
 
     public ProcedureCall(String n, List<Expression> p) {
@@ -16,7 +15,13 @@ public class ProcedureCall extends Expression{
     @Override
     public int eval(Environment env) throws InvalidOperator, ContinueException, BreakException, ArgumentMismatchException
     {
-        e = new Environment(env);
+        Environment e;
+        if (env.getParent() == null) {
+            e = new Environment(env);
+        } else {
+            e = new Environment(env.getParent());
+        }
+
         ProcedureDeclaration proc = env.getProcedure(name);
         List<String> vars = proc.getParams();
         if (params.size() != vars.size()) {
@@ -26,11 +31,12 @@ public class ProcedureCall extends Expression{
         {
             for (int i = 0; i < params.size(); i++)
             {
-                e.setVariable(vars.get(i), params.get(i).eval(env));
+                e.declareVariable(vars.get(i), params.get(i).eval(env));
             }
         }
+        e.declareVariable(proc.getName(), 0);
         proc.exec(e);
-        return 0;
+        return e.getVariable(proc.getName());
     }
 
     public String getName() {

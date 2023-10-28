@@ -1,6 +1,5 @@
 package environment;
 
-import ast.ProcedureCall;
 import ast.ProcedureDeclaration;
 
 import java.util.HashMap;
@@ -54,6 +53,10 @@ public class Environment
         }
     }
 
+    public void declareVariable(String var, Integer val) {
+        vars.put(var, val);
+    }
+
     /**
      * Returns the value of a variable, given its name
      *
@@ -93,5 +96,9 @@ public class Environment
 
     public boolean hasVariable(String var) {
         return vars.get(var) != null;
+    }
+
+    public Environment getParent() {
+        return parent;
     }
 }
