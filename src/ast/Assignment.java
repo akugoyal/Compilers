@@ -39,7 +39,7 @@ public class Assignment extends Statement
         {
             env.setVariable(var, exp.eval(env));
         } else {
-            env.getProcedure(((ProcedureCall) exp).getName()).exec(env);
+            exp.eval(env);
         }
     }
 

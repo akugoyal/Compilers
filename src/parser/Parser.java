@@ -17,6 +17,7 @@ public class Parser
 {
     Scanner s;
     Token current;
+    String out;
 
     /**
      * Creates a Parser object with a Scanner object and sets the look ahead to the next token.
@@ -24,10 +25,11 @@ public class Parser
      * @param sc the Scanner object to be used to create a token stream
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
-    public Parser(Scanner sc) throws ScanErrorException
+    public Parser(Scanner sc, String o) throws ScanErrorException
     {
         s = sc;
         current = s.nextToken();
+        out = o;
     }
 
     /**
@@ -97,7 +99,7 @@ public class Parser
             Expression e = parseExpr();
             eat(")");
             eat(";");
-            return new Writeln(e);
+            return new Writeln(e, out);
         }
 
         //Block (begin/end)
@@ -152,9 +154,10 @@ public class Parser
                 String n = current.getToken();
                 eat(n);
                 eat("(");
-                LinkedList<Expression> p = new LinkedList<Expression>();
+                LinkedList<Expression> params = new LinkedList<Expression>();
                 while(!current.getToken().equals(")")) {
-                    p.add(parseExpr());
+                    Expression exp = parseExpr();
+                    params.add(exp);
                     if (!current.getToken().equals(")"))
                     {
                         eat(",");
@@ -162,8 +165,7 @@ public class Parser
                 }
                 eat(")");
                 eat(";");
-                return new Assignment("ignore", new ProcedureCall(n, p));
-
+                return new Assignment("ignore", new ProcedureCall(n, params));
             }
             //Variable assignment
             else

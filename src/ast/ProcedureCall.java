@@ -20,7 +20,8 @@ public class ProcedureCall extends Expression{
         ProcedureDeclaration proc = env.getProcedure(name);
         List<String> vars = proc.getParams();
         if (params.size() != vars.size()) {
-            throw new ArgumentMismatchException();
+            throw new ArgumentMismatchException("Procedure expects " + vars.size() + " parameters" +
+                    " and only recieved " + params.size());
         } else
         {
             for (int i = 0; i < params.size(); i++)

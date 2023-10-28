@@ -43,4 +43,8 @@ public class Variable extends Expression
     {
         return env.getVariable(name);
     }
+
+    public String toString() {
+        return name;
+    }
 }

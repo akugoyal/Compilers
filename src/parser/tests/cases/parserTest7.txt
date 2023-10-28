@@ -3,8 +3,7 @@ WHILE 1 + 1 = 2 DO
     BEGIN
         i := i + 1;
         IF i = 3 THEN BREAK;
-        WRITELN(i);
+            WRITELN(i);
         IF i = 2 THEN CONTINUE;
-        WRITELN(i);
-    END;
-.
+            WRITELN(i);
+END;

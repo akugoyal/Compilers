@@ -1,7 +1,9 @@
 package ast;
 
 import environment.*;
-import java.io.*;
+
+import java.io.IOException;
+import java.nio.file.*;
 
 /**
  * Writeln is a Statement that prints the value of an Expression to the console.
@@ -12,15 +14,17 @@ import java.io.*;
 public class Writeln extends Statement
 {
     private Expression exp;
+    private String loc;
 
     /**
      * Constructor for objects of class Writeln
      *
      * @param expression the Expression to be printed
      */
-    public Writeln(Expression expression)
+    public Writeln(Expression expression, String l)
     {
         exp = expression;
+        loc = l;
     }
 
     /**
@@ -31,7 +35,15 @@ public class Writeln extends Statement
      */
     public void exec(Environment env) throws InvalidOperator, ContinueException, BreakException, ArgumentMismatchException
     {
-        BufferedReader
-        System.out.println(exp.eval(env));
+        try
+        {
+            Files.write(Paths.get(loc), (exp.eval(env) + "\n").getBytes(),
+                    StandardOpenOption.APPEND);
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+//        System.out.println(exp.eval(env));
     }
 }

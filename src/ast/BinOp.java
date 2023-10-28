@@ -55,4 +55,8 @@ public class BinOp extends Expression
                 throw new InvalidOperator(op + " is not a valid operator.");
         }
     }
+
+    public String toString() {
+        return exp1 + op + exp2;
+    }
 }

@@ -31,6 +31,8 @@ public class Environment
 
     public Environment(Environment e) {
         parent = e;
+        vars = new HashMap<String, Integer>();
+        procs = new HashMap<String, ProcedureDeclaration>();
     }
 
     /**
@@ -41,7 +43,15 @@ public class Environment
      */
     public void setVariable(String var, Integer val)
     {
-        vars.put(var, val);
+        if (vars.get(var) == null) {
+            if (parent != null && parent.hasVariable(var)) {
+                parent.setVariable(var, val);
+            } else {
+                vars.put(var, val);
+            }
+        } else {
+            vars.put(var, val);
+        }
     }
 
     /**
@@ -79,5 +89,9 @@ public class Environment
         } else {
             return p;
         }
+    }
+
+    public boolean hasVariable(String var) {
+        return vars.get(var) != null;
     }
 }
