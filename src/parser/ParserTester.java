@@ -61,7 +61,7 @@ public class ParserTester
         }
 
         if (good) {
-            System.out.println("Everything works");
+            System.out.println("Everything works!");
         }
     }
 
