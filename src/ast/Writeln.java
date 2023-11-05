@@ -20,6 +20,7 @@ public class Writeln extends Statement
      * Constructor for objects of class Writeln
      *
      * @param expression the Expression to be printed
+     * @param l          the location to which the output should be written
      */
     public Writeln(Expression expression, String l)
     {
@@ -28,22 +29,33 @@ public class Writeln extends Statement
     }
 
     /**
-     * Executes the Writeln statement by evaluating the Expression and printing it to the console.
+     * Executes the Writeln statement by evaluating the Expression and printing it to the output
+     * location. Can append to a file or print to the console.
      *
      * @param env the environment in which the statement is executed
-     * @throws InvalidOperator if the Expression contains an invalid operator
+     * @throws InvalidOperator           if the Expression contains an invalid operator
+     * @throws ContinueException         if a continue statement is executed
+     * @throws BreakException            if a break statement is executed
+     * @throws ArgumentMismatchException if an incorrect number of arguments is passed to a function
      */
-    public void exec(Environment env) throws InvalidOperator, ContinueException, BreakException, ArgumentMismatchException
+    public void exec(Environment env) throws InvalidOperator, ContinueException, BreakException,
+            ArgumentMismatchException
     {
-        try
+        if (loc.equals("stdout"))
         {
-            Files.write(Paths.get(loc), (exp.eval(env) + "\n").getBytes(),
-                    StandardOpenOption.APPEND);
+            System.out.println(exp.eval(env));
         }
-        catch (IOException e)
+        else
         {
-            throw new RuntimeException(e);
+            try
+            {
+                Files.write(Paths.get(loc), (exp.eval(env) + "\n").getBytes(),
+                        StandardOpenOption.APPEND);
+            }
+            catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
         }
-//        System.out.println(exp.eval(env));
     }
 }

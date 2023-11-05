@@ -45,7 +45,8 @@ public class Block extends Statement
      * @throws BreakException  if a break statement is executed
      */
     @Override
-    public void exec(Environment env) throws InvalidOperator, BreakException, ArgumentMismatchException
+    public void exec(Environment env) throws InvalidOperator, BreakException,
+            ArgumentMismatchException
     {
         for (Statement s : stmts)
         {
@@ -56,7 +57,9 @@ public class Block extends Statement
             catch (ContinueException c)
             {
                 break;
-            } catch (ExitException ex) {
+            }
+            catch (ExitException ex)
+            {
                 return;
             }
         }

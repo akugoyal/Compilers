@@ -101,10 +101,12 @@ public class Scanner
         {
             int inp = in.read();
             if (inp == -1) eof = true;
-            else {
+            else
+            {
                 currentChar = (char) inp;
 
-                if (currentChar == '.') {
+                if (currentChar == '.')
+                {
                     eof = true;
                 }
             }
@@ -206,7 +208,8 @@ public class Scanner
         String token = "";
         token += currentChar;
         eat(currentChar);
-        if (currentChar == '=') {
+        if (currentChar == '=')
+        {
             token += currentChar;
             eat(currentChar);
         }
@@ -276,7 +279,9 @@ public class Scanner
                     }
                 }
 
-                if (currentChar == ',') {
+                //Skip commas
+                if (currentChar == ',')
+                {
                     eat(',');
                     return nextToken();
                 }

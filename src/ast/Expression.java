@@ -19,5 +19,6 @@ public abstract class Expression
      * @return the integer evaluation of the expression
      * @throws InvalidOperator if the operator is invalid
      */
-    public abstract int eval(Environment env) throws InvalidOperator, ContinueException, BreakException, ArgumentMismatchException;
+    public abstract int eval(Environment env) throws InvalidOperator, ContinueException,
+            BreakException, ArgumentMismatchException;
 }

@@ -7,8 +7,8 @@ import java.util.LinkedList;
 
 /**
  * The Parser class is a class that parses a file by using a Scanner object to create a token
- * stream and then parsing and evaluating each line. Supports blocks, expressions, variables, and
- * write statements in Pascal.
+ * stream and then parsing and evaluating each line. Supports blocks, expressions, variables,
+ * write statements, and procedures in Pascal.
  *
  * @author Akul Goyal
  * @version 10/14/2023
@@ -22,6 +22,7 @@ public class Parser
     /**
      * Creates a Parser object with a Scanner object and sets the look ahead to the next token.
      *
+     * @param o  the name of the output location for WRITELN statements
      * @param sc the Scanner object to be used to create a token stream
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
@@ -68,18 +69,21 @@ public class Parser
 
     /**
      * Parses a Statement and returns it. Statements can be continue, break, block (begin/end),
-     * if, while, for, variable assignment, or writeln constructs.
+     * if, while, for, variable assignment, exit, or writeln constructs.
      *
      * @return the Statement that was parsed
      * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
      */
     private Statement parseStatement() throws ScanErrorException
     {
-        if (current.getToken().equals("EXIT")) {
+        //Exit
+        if (current.getToken().equals("EXIT"))
+        {
             eat("EXIT");
             eat(";");
             return new Exit();
         }
+
         //Continue
         else if (current.getToken().equals("CONTINUE"))
         {
@@ -153,14 +157,17 @@ public class Parser
                 Expression exp = parseExpr();
                 eat("DO");
                 return new For(a, exp, parseStatement());
-            } else if (current.getToken().equals("ignore")) {
+            }
+            else if (current.getToken().equals("ignore"))
+            {
                 eat("ignore");
                 eat(":=");
                 String n = current.getToken();
                 eat(n);
                 eat("(");
                 LinkedList<Expression> params = new LinkedList<Expression>();
-                while(!current.getToken().equals(")")) {
+                while (!current.getToken().equals(")"))
+                {
                     Expression exp = parseExpr();
                     params.add(exp);
 //                    if (!current.getToken().equals(")"))
@@ -342,29 +349,34 @@ public class Parser
         return e;
     }
 
+    /**
+     * Parses a program and returns it. Programs can contain procedure declarations and a main
+     * block of code or just a main block of code.
+     *
+     * @return the Program object representing the head of the AST
+     * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
+     */
     public Program parseProgram() throws ScanErrorException
     {
         LinkedList<ProcedureDeclaration> procs = new LinkedList<ProcedureDeclaration>();
-        while (current.getToken().equals("PROCEDURE")) {
+        while (current.getToken().equals("PROCEDURE"))
+        {
             eat("PROCEDURE");
             String name = current.getToken();
             eat(name);
             eat("(");
             LinkedList<String> p = new LinkedList<String>();
-            while(!current.getToken().equals(")")) {
+            while (!current.getToken().equals(")"))
+            {
                 p.add(current.getToken());
                 eat(current.getToken());
-//                if (!current.getToken().equals(")"))
-//                {
-//                    eat(",");
-//                }
             }
             eat(")");
             eat(";");
-            Statement s = parseStatement();
-            procs.add(new ProcedureDeclaration(name, s, p));
+            procs.add(new ProcedureDeclaration(name, parseStatement(), p));
         }
-        if (procs.size() == 0) {
+        if (procs.size() == 0)
+        {
             LinkedList<Statement> stmts = new LinkedList<Statement>();
             while (s.hasNextToken())
             {

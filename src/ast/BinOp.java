@@ -37,7 +37,8 @@ public class BinOp extends Expression
      * @throws InvalidOperator if the operator is not valid
      */
     @Override
-    public int eval(Environment env) throws InvalidOperator, ContinueException, BreakException, ArgumentMismatchException
+    public int eval(Environment env) throws InvalidOperator, ContinueException, BreakException,
+            ArgumentMismatchException
     {
         switch (op)
         {
@@ -56,7 +57,8 @@ public class BinOp extends Expression
         }
     }
 
-    public String toString() {
+    public String toString()
+    {
         return exp1 + op + exp2;
     }
 }

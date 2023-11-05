@@ -34,7 +34,8 @@ public class Number extends Expression
         return value;
     }
 
-    public String toString() {
+    public String toString()
+    {
         return Integer.toString(value);
     }
 }

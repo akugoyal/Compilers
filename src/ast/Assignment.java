@@ -39,7 +39,9 @@ public class Assignment extends Statement
         if (!var.equals("ignore"))
         {
             env.setVariable(var, exp.eval(env));
-        } else {
+        }
+        else
+        {
             exp.eval(env);
         }
     }
