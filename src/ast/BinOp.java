@@ -86,7 +86,7 @@ public class BinOp extends Expression
                 e.emit("sub $v0 $v0 $t0");
                 break;
             case "mod":
-                e.emit("div $t0 $v0");
+                e.emit("div $v0 $t0");
                 e.emit("mfhi $v0");
                 break;
             default:

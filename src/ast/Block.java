@@ -1,6 +1,7 @@
 package ast;
 
 import environment.Environment;
+import parser.Emitter;
 
 import java.util.*;
 
@@ -63,5 +64,15 @@ public class Block extends Statement
                 return;
             }
         }
+    }
+
+    @Override
+    public void compile(Emitter e) throws InvalidOperator
+    {
+        e.emit("\n");
+        for (Statement s: stmts) {
+            s.compile(e);
+        }
+        e.emit("\n");
     }
 }
