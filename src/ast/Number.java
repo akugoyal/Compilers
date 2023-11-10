@@ -1,6 +1,7 @@
 package ast;
 
 import environment.Environment;
+import parser.Emitter;
 
 /**
  * Number is an Expression that represents a single integer value.
@@ -37,5 +38,11 @@ public class Number extends Expression
     public String toString()
     {
         return Integer.toString(value);
+    }
+
+    @Override
+    public void compile(Emitter e)
+    {
+        e.emit("li $v0 " + value);
     }
 }

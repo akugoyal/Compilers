@@ -1,6 +1,7 @@
 package ast;
 
 import environment.*;
+import parser.Emitter;
 
 /**
  * Statement is an abstract class that represents a statement in the Abstract Syntax Tree (AST).
@@ -22,4 +23,13 @@ public abstract class Statement
      */
     public abstract void exec(Environment env) throws InvalidOperator, BreakException,
             ContinueException, ArgumentMismatchException, ExitException;
+
+    /**
+     * Abstract method compiles the statement to MIPS code.
+     * @param e the emitter that writes the code to a file
+     */
+    public void compile(Emitter e)
+    {
+        throw new RuntimeException("Implement me!!!!!");
+    }
 }

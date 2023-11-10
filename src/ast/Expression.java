@@ -1,6 +1,7 @@
 package ast;
 
 import environment.*;
+import parser.Emitter;
 
 /**
  * Expression is the abstract base class for all expressions. Expressions are Binary Expressions,
@@ -21,4 +22,14 @@ public abstract class Expression
      */
     public abstract int eval(Environment env) throws InvalidOperator, ContinueException,
             BreakException, ArgumentMismatchException;
+
+    /**
+     * Abstract method compiles the expression to MIPS code.
+     *
+     * @param e the emitter that writes the code to a file
+     */
+    public void compile(Emitter e)
+    {
+        throw new RuntimeException("Implement me!!!!!");
+    }
 }

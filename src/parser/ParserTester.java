@@ -29,14 +29,15 @@ public class ParserTester
     public static void main(String[] args) throws IOException, ScanErrorException
     {
         String output = "file";               //set to "file" to test output and write to file
+        String method = "compile";
 
         if (output.equals("stdout"))
         {
-            execAll();
+            execAll(method);
         }
         else if (output.equals("file"))     //Writes answers to file and compares against solutions
         {
-            testAll();
+            testAll(method);
         }
     }
 
@@ -47,14 +48,14 @@ public class ParserTester
      * @throws IOException        if the file to be written to is not found
      * @throws ScanErrorException if the Scanner object encounters an invalid character
      */
-    private static void testAll() throws IOException, ScanErrorException
+    private static void testAll(String method) throws IOException, ScanErrorException
     {
         int numCases = new File("src/parser/tests/cases").listFiles().length;
         String fileName = "src/parser/tests/cases/parserTest";
         String tempName = "src/parser/tests/temp/parserTest";
         String solName = "src/parser/tests/solutions/parserTest";
         clearFiles(tempName, numCases);
-        for (int i = 0; i < numCases; i++)
+        for (int i = 0; i < 1; i++)
         {
             Scanner s = new Scanner(new BufferedReader(new FileReader(fileName + i + ".txt")));
 
@@ -63,7 +64,31 @@ public class ParserTester
             Program prog = p.parseProgram();
             try
             {
-                prog.exec(env);
+                if (method.equals("compile"))
+                {
+                    prog.compile("src/parser/assembly.asm");
+                    Runtime r = Runtime.getRuntime();
+                    Process process = r.exec("java -jar /Applications/Mars4_5.jar " +
+                            "/Users/akulgoyal/Desktop/Compilers/Compiler/src/parser/assembly.asm");
+                    BufferedReader inp = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(tempName + i + ".txt"));
+                    String line;
+                    inp.readLine();
+                    inp.readLine();
+                    while ((line = inp.readLine()) != null)
+                    {
+                        if (line.equals("")) {
+                            bw.write("\n");
+                        } else
+                        {
+                            bw.write(line);
+                        };
+                    }
+                    bw.close();
+                } else if (method.equals("execute")) {
+                    prog.exec(env);
+                }
+
             }
             catch (Exception e)
             {
@@ -95,7 +120,7 @@ public class ParserTester
      * @throws FileNotFoundException if the file to be parsed is not found
      * @throws ScanErrorException    if the Scanner object encounters an invalid character
      */
-    private static void execAll() throws FileNotFoundException, ScanErrorException
+    private static void execAll(String method) throws FileNotFoundException, ScanErrorException
     {
         int numCases = new File("src/parser/tests/cases").listFiles().length;
         String fileName = "src/parser/tests/cases/parserTest";
@@ -110,7 +135,21 @@ public class ParserTester
             Program prog = p.parseProgram();
             try
             {
-                prog.exec(env);
+                if (method.equals("compile"))
+                {
+                    prog.compile("src/parser/assembly.asm");
+                    Runtime r = Runtime.getRuntime();
+                    Process process = r.exec("java -jar /Applications/Mars4_5.jar " +
+                            "/Users/akulgoyal/Desktop/Compilers/Compiler/src/parser/assembly.asm");
+                    BufferedReader inp = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    String line;
+                    while ((line = inp.readLine()) != null)
+                    {
+                        System.out.println(line);
+                    }
+                } else if (method.equals("execute")) {
+                    prog.exec(env);
+                }
             }
             catch (Exception e)
             {

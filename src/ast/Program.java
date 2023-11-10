@@ -1,7 +1,10 @@
 package ast;
 
 import environment.*;
+import parser.Emitter;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -66,5 +69,24 @@ public class Program
                 return;
             }
         }
+    }
+
+    public void compile(String fileName) throws IOException
+    {
+        new FileWriter(fileName, false).close();
+        Emitter e = new Emitter(fileName);
+        e.emit(".text");
+        e.emit(".globl main");
+        e.emit("main: #QTSPIM will automatically look for main");
+        for (Statement s: stmts) {
+            s.compile(e);
+        }
+        e.emit("# future code will go here");
+        e.emit("li $v0 10");
+        e.emit("syscall # halt");
+        e.emit(".data");
+        e.emit("newLine:");
+        e.emit(".asciiz \"\\n\"");
+        e.close();
     }
 }
