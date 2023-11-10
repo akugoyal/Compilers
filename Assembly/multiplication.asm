@@ -1,3 +1,7 @@
+# This program multiplies two numbers and prints the result.
+# Author: Akul Goyal
+# Version: 11-9-2023
+
 .globl multiply
 multiply:
 la $a0, first

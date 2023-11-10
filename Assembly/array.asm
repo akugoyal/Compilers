@@ -1,3 +1,8 @@
+# Take in 10 numbers and stores them in an array. Prints the sum, average, min, and max of the data
+# set.
+# Author: Akul Goyal
+# Version: 11-9-2023
+
 .globl arrMain
 arrMain:
 la $s0, array	#s0 is current location in array

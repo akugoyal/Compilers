@@ -1,3 +1,9 @@
+# This program will generate a random number between 1 and 100, inclusive. The user will then be
+# prompted to guess the number. If the user guesses the number, the program will terminate. If the
+# user guesses too high or too low, the program will prompt the user to guess again
+# Author: Akul Goyal
+# #Version: 11-9-2023
+
 .globl numberGuess
 
 
@@ -24,19 +30,19 @@ blt $t0, $t1, low
 j loop
 
 win:
-la $a0, win_msg
+la $a0, win_msg             # Print win and normal termination
 li $v0, 4
 syscall
 li $v0, 10
 syscall
  
-high:
+high:                       # Print high and loop
 la $a0, high_msg
 li $v0, 4
 syscall
 j loop
 
-low:
+low:                        # Print low and loop
 la $a0, low_msg
 li $v0, 4
 syscall

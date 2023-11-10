@@ -1,5 +1,10 @@
-.globl loops
+# This program will print out a sequence of numbers between a lower and upper bound with a step
+# value in between each number. The user will be prompted to enter the lower bound, upper bound, and
+# step value.
+# Author: Akul Goyal
+# Version: 11-9-2023
 
+.globl loops
 
 loops:
 
@@ -26,7 +31,7 @@ loop:
 bgt $t0, $t1, end
 move $a0, $t0
 li $v0, 1
-syscall		#Print t0
+syscall		            #Print t0
 la $a0, new_line
 li $v0, 4
 syscall
@@ -35,7 +40,7 @@ j loop
 
 
 end:
-li $v0, 10
+li $v0, 10              # Normal termination
 syscall
 
 
