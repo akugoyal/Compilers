@@ -28,7 +28,7 @@ public abstract class Statement
      * Abstract method compiles the statement to MIPS code.
      * @param e the emitter that writes the code to a file
      */
-    public void compile(Emitter e)
+    public void compile(Emitter e) throws InvalidOperator
     {
         throw new RuntimeException("Implement me!!!!!");
     }

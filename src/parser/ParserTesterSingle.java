@@ -1,23 +1,23 @@
 package parser;
 
+import ast.InvalidOperator;
 import ast.Program;
 import environment.Environment;
 import scanner.ScanErrorException;
 import scanner.Scanner;
 
 import java.io.*;
-import java.nio.Buffer;
 
-public class ParserTesterSimple
+public class ParserTesterSingle
 {
-    public static void main(String[] args) throws IOException, ScanErrorException
+    public static void main(String[] args) throws IOException, ScanErrorException, InvalidOperator
     {
-        Scanner s = new Scanner(new BufferedReader(new FileReader("src/parser/simple.txt")));
-
-        Parser p = new Parser(s, "src/parser/simple.txt");
-        Environment env = new Environment();
+        String fileName = "src/parser/tests/cases/parserTest1.txt";
+        Scanner s = new Scanner(new BufferedReader(new FileReader(fileName)));
+        Parser p = new Parser(s, fileName);
         Program prog = p.parseProgram();
         prog.compile("src/parser/assembly.asm");
+
         Runtime r = Runtime.getRuntime();
         Process process = r.exec("java -jar /Applications/Mars4_5.jar " +
                 "/Users/akulgoyal/Desktop/Compilers/Compiler/src/parser/assembly.asm");

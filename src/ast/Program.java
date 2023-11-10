@@ -71,7 +71,7 @@ public class Program
         }
     }
 
-    public void compile(String fileName) throws IOException
+    public void compile(String fileName) throws IOException, InvalidOperator
     {
         new FileWriter(fileName, false).close();
         Emitter e = new Emitter(fileName);

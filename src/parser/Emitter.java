@@ -34,4 +34,14 @@ public class Emitter
 	{
 		out.close();
 	}
+
+	public void emitPush(String reg) {
+		emit("subu $sp $sp 4");
+		emit("sw " + reg + " ($sp)    #push " + reg);
+	}
+
+	public void emitPop(String reg) {
+		emit("lw " + reg + " ($sp)    #pop " + reg);
+		emit("addu $sp $sp 4");
+	}
 }

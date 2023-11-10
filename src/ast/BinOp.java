@@ -1,6 +1,7 @@
 package ast;
 
 import environment.Environment;
+import parser.Emitter;
 
 /**
  * BinOp represents a binary operation expression. It contains an operator and two expressions.
@@ -60,5 +61,37 @@ public class BinOp extends Expression
     public String toString()
     {
         return exp1 + op + exp2;
+    }
+
+    @Override
+    public void compile(Emitter e) throws InvalidOperator
+    {
+        exp2.compile(e);
+        e.emitPush("$v0");
+        exp1.compile(e);
+        e.emitPop("$t0");
+        switch (op) {
+            case "+":
+                e.emit("add $v0 $v0 $t0");
+                break;
+            case "*":
+                e.emit("mult $v0 $t0");
+                e.emit("mflo $v0");
+                break;
+            case "/":
+                e.emit("div $v0 $t0");
+                e.emit("mflo $v0");
+                break;
+            case "-":
+                e.emit("sub $v0 $v0 $t0");
+                break;
+            case "mod":
+                e.emit("div $t0 $v0");
+                e.emit("mfhi $v0");
+                break;
+            default:
+                throw new InvalidOperator(op + " is not a valid operator.");
+        }
+
     }
 }

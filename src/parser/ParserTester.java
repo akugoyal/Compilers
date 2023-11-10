@@ -6,6 +6,7 @@ import scanner.*;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -28,7 +29,7 @@ public class ParserTester
      */
     public static void main(String[] args) throws IOException, ScanErrorException
     {
-        String output = "file";               //set to "file" to test output and write to file
+        String output = "stdout";               //set to "file" to test output and write to file
         String method = "compile";
 
         if (output.equals("stdout"))
@@ -55,7 +56,7 @@ public class ParserTester
         String tempName = "src/parser/tests/temp/parserTest";
         String solName = "src/parser/tests/solutions/parserTest";
         clearFiles(tempName, numCases);
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 2; i++)
         {
             Scanner s = new Scanner(new BufferedReader(new FileReader(fileName + i + ".txt")));
 
@@ -75,14 +76,14 @@ public class ParserTester
                     String line;
                     inp.readLine();
                     inp.readLine();
+                    ArrayList<String> lines = new ArrayList<String>();
                     while ((line = inp.readLine()) != null)
                     {
-                        if (line.equals("")) {
-                            bw.write("\n");
-                        } else
-                        {
-                            bw.write(line);
-                        };
+                        lines.add(line);
+                    }
+                    lines.remove(lines.size()-1);
+                    for (String l : lines) {
+                        bw.write(l+"\n");
                     }
                     bw.close();
                 } else if (method.equals("execute")) {
