@@ -18,6 +18,7 @@ public class Program
 {
     private List<ProcedureDeclaration> procs;
     private List<Statement> stmts = new LinkedList<Statement>();
+    private List<String> vars;
 
     /**
      * Constructor for objects of class Program
@@ -25,10 +26,11 @@ public class Program
      * @param p    list of procedure declarations
      * @param stmt statement that makes up the body of the program
      */
-    public Program(List<ProcedureDeclaration> p, Statement stmt)
+    public Program(List<ProcedureDeclaration> p, Statement stmt, List<String> v)
     {
         procs = p;
         stmts.add(stmt);
+        vars = v;
     }
 
     /**
@@ -36,10 +38,11 @@ public class Program
      *
      * @param stmt list of statements that makes up the body of the program
      */
-    public Program(List<Statement> stmt)
+    public Program(List<Statement> stmt, List<String> v)
     {
         procs = new LinkedList<ProcedureDeclaration>();
         stmts = stmt;
+        vars = v;
     }
 
     /**
@@ -54,6 +57,10 @@ public class Program
     public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException,
             ArgumentMismatchException
     {
+        for (String v: vars) {
+            env.declareVariable(v, 0);
+        }
+
         for (ProcedureDeclaration p : procs)
         {
             env.setProcedure(p.getName(), p);
@@ -85,8 +92,10 @@ public class Program
         e.emit("li $v0 10");
         e.emit("syscall # halt");
         e.emit(".data");
-        e.emit("newLine:");
-        e.emit(".asciiz \"\\n\"");
+        e.emit("newLine:    .asciiz \"\\n\"");
+        for (String v : vars) {
+            e.emit("var" + v + ":   .word 0");
+        }
         e.close();
     }
 }

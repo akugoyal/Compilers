@@ -1,6 +1,7 @@
 package ast;
 
 import environment.Environment;
+import parser.Emitter;
 
 /**
  * Condition is a subclass of Expression that represents a boolean expression
@@ -54,6 +55,36 @@ public class Condition extends Expression
                 return exp1.eval(env) <= exp2.eval(env) ? 1 : 0;
             case ">=":
                 return exp1.eval(env) >= exp2.eval(env) ? 1 : 0;
+            default:
+                throw new InvalidOperator(op + " is not a valid operator");
+        }
+    }
+
+    public void compile(Emitter e, String label) throws InvalidOperator
+    {
+        exp1.compile(e);
+        e.emit("move $t0 $v0");
+        exp2.compile(e);
+        switch (op)
+        {
+            case "=":
+                e.emit("bne $t0 $v0 " + label);
+                break;
+            case "<>":
+                e.emit("beq $t0 $v0 " + label);
+                break;
+            case "<":
+                e.emit("bge $t0 $v0 " + label);
+                break;
+            case ">":
+                e.emit("ble $t0 $v0 " + label);
+                break;
+            case "<=":
+                e.emit("bgt $t0 $v0 " + label);
+                break;
+            case ">=":
+                e.emit("blt $t0 $v0 " + label);
+                break;
             default:
                 throw new InvalidOperator(op + " is not a valid operator");
         }

@@ -1,6 +1,7 @@
 package ast;
 
 import environment.Environment;
+import parser.Emitter;
 
 /**
  * Assignment is a Statement that assigns a value to a variable.
@@ -54,5 +55,12 @@ public class Assignment extends Statement
     public String getVar()
     {
         return var;
+    }
+
+    @Override
+    public void compile(Emitter e) throws InvalidOperator
+    {
+        exp.compile(e);
+        e.emit("sw $v0 var" + var);
     }
 }

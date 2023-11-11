@@ -1,6 +1,7 @@
 package ast;
 
 import environment.Environment;
+import parser.Emitter;
 
 /**
  * Variable class represents a variable in an expression.
@@ -47,5 +48,12 @@ public class Variable extends Expression
     public String toString()
     {
         return name;
+    }
+
+    @Override
+    public void compile(Emitter e) throws InvalidOperator
+    {
+        e.emit("la $t0 var" + name);
+        e.emit("lw $v0 ($t0)");
     }
 }

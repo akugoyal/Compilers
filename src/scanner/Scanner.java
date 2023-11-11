@@ -208,7 +208,7 @@ public class Scanner
         String token = "";
         token += currentChar;
         eat(currentChar);
-        if (currentChar == '=')
+        if (currentChar == '=' || (token.equals("<") && currentChar == '>'))
         {
             token += currentChar;
             eat(currentChar);

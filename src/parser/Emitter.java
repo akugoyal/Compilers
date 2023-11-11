@@ -5,10 +5,12 @@ import java.io.*;
 public class Emitter
 {
 	private PrintWriter out;
+	private int labelID;
 
 	//creates an emitter for writing to a new file with given name
 	public Emitter(String outputFileName)
 	{
+		labelID = 0;
 		try
 		{
 			out = new PrintWriter(new FileWriter(outputFileName), true);
@@ -43,5 +45,10 @@ public class Emitter
 	public void emitPop(String reg) {
 		emit("lw " + reg + " ($sp)    #pop " + reg);
 		emit("addu $sp $sp 4");
+	}
+
+	public int nextLabelID() {
+		labelID++;
+		return labelID;
 	}
 }

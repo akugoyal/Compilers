@@ -358,6 +358,15 @@ public class Parser
      */
     public Program parseProgram() throws ScanErrorException
     {
+        LinkedList<String> vars = new LinkedList<String>();
+        if (current.getToken().equals("VAR")) {
+            eat("VAR");
+            while (!current.getToken().equals(";")) {
+                vars.add(current.getToken());
+                eat(current.getToken());
+            }
+            eat(";");
+        }
         LinkedList<ProcedureDeclaration> procs = new LinkedList<ProcedureDeclaration>();
         while (current.getToken().equals("PROCEDURE"))
         {
@@ -383,10 +392,10 @@ public class Parser
                 stmts.add(parseStatement());
             }
             eat("EOF");
-            return new Program(stmts);
+            return new Program(stmts, vars);
         }
         Statement stmt = parseStatement();
         eat("EOF");
-        return new Program(procs, stmt);
+        return new Program(procs, stmt, vars);
     }
 }
