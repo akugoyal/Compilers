@@ -66,11 +66,19 @@ public class Block extends Statement
         }
     }
 
+    /**
+     * Compiles each statement in the block to MIPS code.
+     *
+     * @param e the emitter that writes the code to a file
+     * @throws InvalidOperator if any of the statements in the block contain an invalid
+     *                         relational operator.
+     */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
         e.emit("\n");
-        for (Statement s: stmts) {
+        for (Statement s : stmts)
+        {
             s.compile(e);
         }
         e.emit("\n");

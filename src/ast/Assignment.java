@@ -58,14 +58,25 @@ public class Assignment extends Statement
     }
 
     /**
-     * 
+     * Writes MIPS code that assigns the value of the expression to the variable.
+     *
      * @param e the emitter that writes the code to a file
-     * @throws InvalidOperator
+     * @throws InvalidOperator if the expression contains invalid relational operators
      */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
         exp.compile(e);
         e.emit("sw $v0 var" + var);
+    }
+
+    /**
+     * Returns the expression in the assignment
+     *
+     * @return the expression in the assignment
+     */
+    public Expression getExpr()
+    {
+        return exp;
     }
 }

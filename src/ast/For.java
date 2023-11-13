@@ -1,6 +1,7 @@
 package ast;
 
 import environment.Environment;
+import parser.Emitter;
 
 /**
  * For is a Statement that executes a Statement a certain number of times.
@@ -54,5 +55,19 @@ public class For extends Statement
                 return;
             }
         }
+    }
+
+    @Override
+    public void compile(Emitter e) throws InvalidOperator
+    {
+        var.compile(e);
+        String endLabel = "endwhile" + e.nextLabelID();
+        String startLabel = "startwhile" + e.nextLabelID();
+        e.emit(startLabel + ":");
+        new Condition(new Variable(var.getVar()), end, "<=").compile(e, endLabel);
+        stmt.compile(e);
+        new Assignment(var.getVar(), new BinOp("+", new Variable(var.getVar()), new Number(1))).compile(e);
+        e.emit("j " + startLabel);
+        e.emit(endLabel + ":");
     }
 }

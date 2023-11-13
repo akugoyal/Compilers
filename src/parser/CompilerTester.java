@@ -8,11 +8,42 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.time.*;
 
+/*
+
+
+
+
+
+
+
+
+
+    GIVE LIKE MESSSAGES LIKE "COMPILING THIS FILE NOW", ETC ETC OR DATAR RAGE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ */
 public class CompilerTester
 {
     public static void main(String[] args) throws IOException, ScanErrorException
     {
+        double start = System.nanoTime();
         String output = "file";               //set to "file" to test output and write to file
 
         if (output.equals("stdout"))
@@ -23,6 +54,8 @@ public class CompilerTester
         {
             testAll();
         }
+        System.out.println("Jeez, that took " + (System.nanoTime() - start)/(1000000000) +
+                " seconds UwU.");
     }
 
     private static void testAll() throws IOException, ScanErrorException

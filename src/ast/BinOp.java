@@ -58,11 +58,23 @@ public class BinOp extends Expression
         }
     }
 
+    /**
+     * Converts the binary operation expression into a String.
+     *
+     * @return the String representation of the binary operation expression
+     */
     public String toString()
     {
         return exp1 + op + exp2;
     }
 
+    /**
+     * Compiles the binary operation expression into MIPS by compiling the two expressions and then
+     * applying the operator and storing the result in $v0.
+     *
+     * @param e the emitter that writes the code to a file
+     * @throws InvalidOperator if the operator is not valid
+     */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
@@ -70,7 +82,8 @@ public class BinOp extends Expression
         e.emitPush("$v0");
         exp1.compile(e);
         e.emitPop("$t0");
-        switch (op) {
+        switch (op)
+        {
             case "+":
                 e.emit("add $v0 $v0 $t0");
                 break;

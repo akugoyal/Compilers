@@ -1,0 +1,6 @@
+VAR x;
+BEGIN
+x := 5;
+EXIT;
+WRITELN(x);
+END;

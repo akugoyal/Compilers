@@ -11,7 +11,7 @@ eigth: .word 227
 .globl main
 # 
 main:
-li $a2 0		# instrument: piano
+li $a2 51		# instrument: no idea
 li $a3 127		# volume: max
 
 lw $t0 notes		# t0: numNotes

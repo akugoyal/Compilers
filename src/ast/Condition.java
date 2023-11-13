@@ -60,6 +60,13 @@ public class Condition extends Expression
         }
     }
 
+    /**
+     * Compiles the boolean expression and branches to an end label if the expression is false
+     *
+     * @param e     the emitter that writes the code to a file
+     * @param label The label to branch to if the expression is false
+     * @throws InvalidOperator If the boolean operator is not valid
+     */
     public void compile(Emitter e, String label) throws InvalidOperator
     {
         exp1.compile(e);
