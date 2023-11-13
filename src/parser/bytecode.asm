@@ -3,51 +3,37 @@
 	main: #QTSPIM will automatically look for main
 	
 
-	li $v0 14
+	li $v0 1
+	sw $v0 varcount
+startwhile2:
+	la $t0 varcount
+	lw $v0 ($t0)
 	move $t0 $v0
-	li $v0 14
-	bne $t0 $v0 endif1
-	
-
-	li $v0 14
-	move $t0 $v0
-	li $v0 14
-	beq $t0 $v0 endif2
-	li $v0 3
-	move $a0, $v0
-	li $v0, 1
-	syscall
-	la $a0, newLine
-	li $v0, 4
-	syscall
-endif2:
-	li $v0 14
-	move $t0 $v0
-	li $v0 14
-	bgt $t0 $v0 endif3
-	li $v0 4
-	move $a0, $v0
-	li $v0, 1
-	syscall
-	la $a0, newLine
-	li $v0, 4
-	syscall
-endif3:
-	
-
-endif1:
 	li $v0 15
-	move $t0 $v0
-	li $v0 14
-	ble $t0 $v0 endif4
-	li $v0 5
+	bgt $t0 $v0 endwhile1
+	
+
+	la $t0 varcount
+	lw $v0 ($t0)
 	move $a0, $v0
 	li $v0, 1
 	syscall
 	la $a0, newLine
 	li $v0, 4
 	syscall
-endif4:
+	li $v0 1
+	subu $sp $sp 4
+	sw $v0 ($sp)    #push $v0
+	la $t0 varcount
+	lw $v0 ($t0)
+	lw $t0 ($sp)    #pop $t0
+	addu $sp $sp 4
+	add $v0 $v0 $t0
+	sw $v0 varcount
+	
+
+	j startwhile2
+endwhile1:
 	
 
 	# future code will go here
@@ -55,3 +41,4 @@ endif4:
 	syscall # halt
 	.data
 	newLine:    .asciiz "\n"
+	varcount:   .word 0

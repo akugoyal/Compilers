@@ -1,6 +1,7 @@
 package ast;
 
 import environment.Environment;
+import parser.Emitter;
 
 /**
  * While is a Statement that executes a Statement while a Condition is true.
@@ -51,5 +52,17 @@ public class While extends Statement
                 return;
             }
         }
+    }
+
+    @Override
+    public void compile(Emitter e) throws InvalidOperator
+    {
+        String endLabel = "endwhile" + e.nextLabelID();
+        String startLabel = "startwhile" + e.nextLabelID();
+        e.emit(startLabel + ":");
+        cond.compile(e, endLabel);
+        then.compile(e);
+        e.emit("j " + startLabel);
+        e.emit(endLabel + ":");
     }
 }

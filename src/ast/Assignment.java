@@ -57,6 +57,11 @@ public class Assignment extends Statement
         return var;
     }
 
+    /**
+     * 
+     * @param e the emitter that writes the code to a file
+     * @throws InvalidOperator
+     */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
