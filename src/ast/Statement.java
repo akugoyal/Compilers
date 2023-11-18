@@ -1,7 +1,7 @@
 package ast;
 
 import environment.*;
-import parser.Emitter;
+import emitter.Emitter;
 
 /**
  * Statement is an abstract class that represents a statement in the Abstract Syntax Tree (AST).
@@ -26,7 +26,9 @@ public abstract class Statement
 
     /**
      * Abstract method compiles the statement to MIPS code.
+     *
      * @param e the emitter that writes the code to a file
+     * @throws InvalidOperator if an invalid binary or relational operator is used
      */
     public void compile(Emitter e) throws InvalidOperator
     {

@@ -1,7 +1,7 @@
 package ast;
 
 import environment.Environment;
-import parser.Emitter;
+import emitter.Emitter;
 
 import java.util.*;
 
@@ -41,9 +41,11 @@ public class Block extends Statement
      * executed.
      *
      * @param env the environment in which to execute the block
-     * @throws InvalidOperator if any of the statements in the block contain an invalid relational
-     *                         operator
-     * @throws BreakException  if a break statement is executed
+     * @throws InvalidOperator           if any of the statements in the block contain an invalid
+     *                                   relational operator
+     * @throws BreakException            if a break statement is executed
+     * @throws ArgumentMismatchException if a function call is made with the wrong number of
+     *                                   arguments
      */
     @Override
     public void exec(Environment env) throws InvalidOperator, BreakException,
@@ -76,11 +78,11 @@ public class Block extends Statement
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
-        e.emit("\n");
+        e.emit("\n", "Begin block");
         for (Statement s : stmts)
         {
             s.compile(e);
         }
-        e.emit("\n");
+        e.emit("\n", "End block");
     }
 }

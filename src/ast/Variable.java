@@ -1,7 +1,7 @@
 package ast;
 
 import environment.Environment;
-import parser.Emitter;
+import emitter.Emitter;
 
 /**
  * Variable class represents a variable in an expression.
@@ -45,15 +45,26 @@ public class Variable extends Expression
         return env.getVariable(name);
     }
 
+    /**
+     * Method to convert the variable to a String
+     *
+     * @return the name of the variable
+     */
     public String toString()
     {
         return name;
     }
 
+    /**
+     * Compiles the variable into MIPS assembly code
+     *
+     * @param e the emitter that writes the code to a file
+     * @throws InvalidOperator if the variable is not found
+     */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
-        e.emit("la $t0 var" + name);
-        e.emit("lw $v0 ($t0)");
+        e.emit("la $t0 var" + name, "");
+        e.emit("lw $v0 ($t0)", "load variable into $v0");
     }
 }

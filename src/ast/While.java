@@ -1,7 +1,7 @@
 package ast;
 
 import environment.Environment;
-import parser.Emitter;
+import emitter.Emitter;
 
 /**
  * While is a Statement that executes a Statement while a Condition is true.
@@ -30,8 +30,10 @@ public class While extends Statement
      * Executes the statement while the condition is true.
      *
      * @param env the environment in which the statement is executed
-     * @throws InvalidOperator   if any Statement contains an invalid operator
-     * @throws ContinueException if a continue statement is executed
+     * @throws InvalidOperator           if any Statement contains an invalid operator
+     * @throws ContinueException         if a continue statement is executed
+     * @throws BreakException            if a break statement is executed
+     * @throws ArgumentMismatchException if an invalid number of arguments is passed to a function
      */
     @Override
     public void exec(Environment env) throws InvalidOperator, ContinueException, BreakException,
@@ -54,15 +56,21 @@ public class While extends Statement
         }
     }
 
+    /**
+     * Compiles the statement into MIPS code.
+     *
+     * @param e the emitter that writes the code to a file
+     * @throws InvalidOperator if any Statement contains an invalid operator
+     */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
         String endLabel = "endwhile" + e.nextLabelID();
         String startLabel = "startwhile" + e.nextLabelID();
-        e.emit(startLabel + ":");
+        e.emit(startLabel + ":", "Begin while loop");
         cond.compile(e, endLabel);
         then.compile(e);
-        e.emit("j " + startLabel);
-        e.emit(endLabel + ":");
+        e.emit("j " + startLabel, "Repeat while loop");
+        e.emit(endLabel + ":", "End while loop");
     }
 }

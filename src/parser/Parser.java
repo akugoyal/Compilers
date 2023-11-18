@@ -359,9 +359,11 @@ public class Parser
     public Program parseProgram() throws ScanErrorException
     {
         LinkedList<String> vars = new LinkedList<String>();
-        if (current.getToken().equals("VAR")) {
+        if (current.getToken().equals("VAR"))
+        {
             eat("VAR");
-            while (!current.getToken().equals(";")) {
+            while (!current.getToken().equals(";"))
+            {
                 vars.add(current.getToken());
                 eat(current.getToken());
             }

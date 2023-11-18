@@ -1,7 +1,7 @@
 package ast;
 
 import environment.Environment;
-import parser.Emitter;
+import emitter.Emitter;
 
 /**
  * If is a type of Statement that executes a Statement if a Condition is true.
@@ -57,6 +57,6 @@ public class If extends Statement
         String label = "endif" + e.nextLabelID();
         cond.compile(e, label);
         then.compile(e);
-        e.emit(label + ":");
+        e.emit(label + ":", "exit if condition");
     }
 }

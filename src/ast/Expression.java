@@ -1,7 +1,7 @@
 package ast;
 
 import environment.*;
-import parser.Emitter;
+import emitter.Emitter;
 
 /**
  * Expression is the abstract base class for all expressions. Expressions are Binary Expressions,

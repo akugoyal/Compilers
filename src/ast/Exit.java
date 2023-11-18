@@ -1,7 +1,7 @@
 package ast;
 
 import environment.Environment;
-import parser.Emitter;
+import emitter.Emitter;
 
 /**
  * Exit is a Statement that terminates a program when executed.
@@ -24,10 +24,16 @@ public class Exit extends Statement
         throw new ExitException("Encountered exit");
     }
 
+    /**
+     * Compiles the Exit statement.
+     *
+     * @param e the Emitter that emits MIPS assembly code
+     * @throws InvalidOperator if the operator is invalid
+     */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
-        e.emit("li $v0 10");
-        e.emit("syscall");
+        e.emit("li $v0 10", "Normal termination");
+        e.emit("syscall", "");
     }
 }

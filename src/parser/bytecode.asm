@@ -1,25 +1,24 @@
-	.text
-	.globl main
-	main: #QTSPIM will automatically look for main
+	.text		# 
+	.globl main		# 
+main:		# QTSPIM will automatically look for main
 	
-
-	li $v0 5
-	sw $v0 varx
-	li $v0 10
-	syscall
-	la $t0 varx
-	lw $v0 ($t0)
-	move $a0, $v0
-	li $v0, 1
-	syscall
-	la $a0, newLine
-	li $v0, 4
-	syscall
+		# Begin block
+	li $v0 5		# load number
+	sw $v0 varx		# save v0 to x
+	li $v0 10		# Normal termination
+	syscall		# 
+	la $t0 varx		# 
+	lw $v0 ($t0)		# load variable into $v0
+	move $a0, $v0		# 
+	li $v0, 1		# 
+	syscall		# print the value of the expression
+	la $a0, newLine		# 
+	li $v0, 4		# 
+	syscall		# print a new line
 	
-
-	# future code will go here
-	li $v0 10
-	syscall # halt
-	.data
-	newLine:    .asciiz "\n"
-	varx:   .word 0
+		# End block
+	li $v0 10		# Normal termination
+	syscall		# 
+	.data		# 
+	newLine:	.asciiz	"\n"		# 
+	varx:	.word	 0		# 

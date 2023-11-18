@@ -1,7 +1,7 @@
 package ast;
 
 import environment.*;
-import parser.Emitter;
+import emitter.Emitter;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,6 +25,7 @@ public class Program
      *
      * @param p    list of procedure declarations
      * @param stmt statement that makes up the body of the program
+     * @param v    list of variables
      */
     public Program(List<ProcedureDeclaration> p, Statement stmt, List<String> v)
     {
@@ -37,6 +38,7 @@ public class Program
      * Constructor for objects of class Program
      *
      * @param stmt list of statements that makes up the body of the program
+     * @param v    list of variables
      */
     public Program(List<Statement> stmt, List<String> v)
     {
@@ -57,7 +59,8 @@ public class Program
     public void exec(Environment env) throws InvalidOperator, BreakException, ContinueException,
             ArgumentMismatchException
     {
-        for (String v: vars) {
+        for (String v : vars)
+        {
             env.declareVariable(v, 0);
         }
 
@@ -78,23 +81,31 @@ public class Program
         }
     }
 
+    /**
+     * Compiles the program into MIPS assembly code.
+     *
+     * @param fileName the name of the file to which the assembly code is written
+     * @throws IOException     if the file cannot be found
+     * @throws InvalidOperator if an invalid operator is used in the program
+     */
     public void compile(String fileName) throws IOException, InvalidOperator
     {
         new FileWriter(fileName, false).close();
         Emitter e = new Emitter(fileName);
-        e.emit(".text");
-        e.emit(".globl main");
-        e.emit("main: #QTSPIM will automatically look for main");
-        for (Statement s: stmts) {
+        e.emit(".text", "");
+        e.emit(".globl main", "");
+        e.emit("main:", "QTSPIM will automatically look for main");
+        for (Statement s : stmts)
+        {
             s.compile(e);
         }
-        e.emit("# future code will go here");
-        e.emit("li $v0 10");
-        e.emit("syscall # halt");
-        e.emit(".data");
-        e.emit("newLine:    .asciiz \"\\n\"");
-        for (String v : vars) {
-            e.emit("var" + v + ":   .word 0");
+        e.emit("li $v0 10", "Normal termination");
+        e.emit("syscall", "");
+        e.emit(".data", "");
+        e.emitData("newLine", "asciiz", "\"\\n\"");
+        for (String v : vars)
+        {
+            e.emitData("var" + v, "word", " 0");
         }
         e.close();
     }

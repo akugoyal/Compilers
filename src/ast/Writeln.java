@@ -1,7 +1,7 @@
 package ast;
 
 import environment.*;
-import parser.Emitter;
+import emitter.Emitter;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -60,15 +60,22 @@ public class Writeln extends Statement
         }
     }
 
+    /**
+     * Compiles the Writeln statement into MIPS assembly code by compiling the Expression and
+     * printing it to the output.
+     *
+     * @param e the emitter that writes the code to a file
+     * @throws InvalidOperator if the Expression contains an invalid operator
+     */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
         exp.compile(e);
-        e.emit("move $a0, $v0");
-        e.emit("li $v0, 1");
-        e.emit("syscall");
-        e.emit("la $a0, newLine");
-        e.emit("li $v0, 4");
-        e.emit("syscall");
+        e.emit("move $a0, $v0", "");
+        e.emit("li $v0, 1", "");
+        e.emit("syscall", "print the value of the expression");
+        e.emit("la $a0, newLine", "");
+        e.emit("li $v0, 4", "");
+        e.emit("syscall", "print a new line");
     }
 }

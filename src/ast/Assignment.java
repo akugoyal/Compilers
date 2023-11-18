@@ -1,7 +1,7 @@
 package ast;
 
 import environment.Environment;
-import parser.Emitter;
+import emitter.Emitter;
 
 /**
  * Assignment is a Statement that assigns a value to a variable.
@@ -31,7 +31,10 @@ public class Assignment extends Statement
      * in the environment
      *
      * @param env the environment of the program in which the statement is being executed
-     * @throws InvalidOperator if the expression contains invalid relational operators
+     * @throws InvalidOperator           if the expression contains invalid relational operators
+     * @throws ContinueException         if a continue statement is executed
+     * @throws BreakException            if a break statement is executed
+     * @throws ArgumentMismatchException if the wrong number of arguments are passed to a function
      */
     @Override
     public void exec(Environment env) throws InvalidOperator, ContinueException, BreakException,
@@ -67,16 +70,6 @@ public class Assignment extends Statement
     public void compile(Emitter e) throws InvalidOperator
     {
         exp.compile(e);
-        e.emit("sw $v0 var" + var);
-    }
-
-    /**
-     * Returns the expression in the assignment
-     *
-     * @return the expression in the assignment
-     */
-    public Expression getExpr()
-    {
-        return exp;
+        e.emit("sw $v0 var" + var, "save v0 to " + var);
     }
 }

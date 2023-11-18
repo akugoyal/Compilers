@@ -1,7 +1,7 @@
 package ast;
 
 import environment.Environment;
-import parser.Emitter;
+import emitter.Emitter;
 
 /**
  * Condition is a subclass of Expression that represents a boolean expression
@@ -70,27 +70,27 @@ public class Condition extends Expression
     public void compile(Emitter e, String label) throws InvalidOperator
     {
         exp1.compile(e);
-        e.emit("move $t0 $v0");
+        e.emit("move $t0 $v0", "store first expression");
         exp2.compile(e);
         switch (op)
         {
             case "=":
-                e.emit("bne $t0 $v0 " + label);
+                e.emit("bne $t0 $v0 " + label, "Condition: equals");
                 break;
             case "<>":
-                e.emit("beq $t0 $v0 " + label);
+                e.emit("beq $t0 $v0 " + label, "Condition: not equals");
                 break;
             case "<":
-                e.emit("bge $t0 $v0 " + label);
+                e.emit("bge $t0 $v0 " + label, "Condition: less than");
                 break;
             case ">":
-                e.emit("ble $t0 $v0 " + label);
+                e.emit("ble $t0 $v0 " + label, "Condition: greater than");
                 break;
             case "<=":
-                e.emit("bgt $t0 $v0 " + label);
+                e.emit("bgt $t0 $v0 " + label, "Condition: less than or equal to");
                 break;
             case ">=":
-                e.emit("blt $t0 $v0 " + label);
+                e.emit("blt $t0 $v0 " + label, "Condition: greater than or equal to");
                 break;
             default:
                 throw new InvalidOperator(op + " is not a valid operator");

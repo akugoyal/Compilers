@@ -1,7 +1,9 @@
 package ast;
 
 import environment.Environment;
-import parser.Emitter;
+import emitter.Emitter;
+
+import java.io.IOException;
 
 /**
  * BinOp represents a binary operation expression. It contains an operator and two expressions.
@@ -35,7 +37,10 @@ public class BinOp extends Expression
      *
      * @param env the environment in which the expression is evaluated
      * @return the result of the binary operation
-     * @throws InvalidOperator if the operator is not valid
+     * @throws InvalidOperator           if the operator is not valid
+     * @throws ContinueException         if a continue statement is called
+     * @throws BreakException            if a break statement is called
+     * @throws ArgumentMismatchException if the wrong number of arguments are passed to a function
      */
     @Override
     public int eval(Environment env) throws InvalidOperator, ContinueException, BreakException,
@@ -85,22 +90,22 @@ public class BinOp extends Expression
         switch (op)
         {
             case "+":
-                e.emit("add $v0 $v0 $t0");
+                e.emit("add $v0 $v0 $t0", "addition");
                 break;
             case "*":
-                e.emit("mult $v0 $t0");
-                e.emit("mflo $v0");
+                e.emit("mult $v0 $t0", "");
+                e.emit("mflo $v0", "multiplication");
                 break;
             case "/":
-                e.emit("div $v0 $t0");
-                e.emit("mflo $v0");
+                e.emit("div $v0 $t0", "");
+                e.emit("mflo $v0", "division");
                 break;
             case "-":
-                e.emit("sub $v0 $v0 $t0");
+                e.emit("sub $v0 $v0 $t0", "subtraction");
                 break;
             case "mod":
-                e.emit("div $v0 $t0");
-                e.emit("mfhi $v0");
+                e.emit("div $v0 $t0", "");
+                e.emit("mfhi $v0", "mod");
                 break;
             default:
                 throw new InvalidOperator(op + " is not a valid operator.");
