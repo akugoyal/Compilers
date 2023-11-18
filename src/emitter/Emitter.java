@@ -45,7 +45,11 @@ public class Emitter
             {
                 code = "\t" + code;
             }
-            out.write(code + "\t\t# " + comment + "\n");
+            if (comment.length() > 0)
+            {
+                comment = "\t\t# " + comment;
+            }
+            out.write(code + comment + "\n");
         }
         catch (IOException e)
         {
