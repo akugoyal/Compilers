@@ -1,0 +1,11 @@
+VAR x, y;
+
+PROCEDURE max2(x, y);
+BEGIN
+max2 := x;
+IF y > x THEN max2 := y;
+END;
+
+BEGIN
+WRITELN(max2(17, 19));
+END;

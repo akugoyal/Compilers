@@ -70,6 +70,9 @@ public class Assignment extends Statement
     public void compile(Emitter e) throws InvalidOperator
     {
         exp.compile(e);
-        e.emit("sw $v0 var" + var, "save v0 to " + var);
+        if (!var.equals("ignore"))
+        {
+            e.emit("sw $v0 var" + var, "save v0 to " + var);
+        }
     }
 }

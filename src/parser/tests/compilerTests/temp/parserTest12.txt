@@ -1,0 +1,2 @@
+Error in /Users/akulgoyal/Desktop/Compilers/Compiler/src/parser/bytecode.asm line 120 column 9: Symbol "varw" not found in symbol table.
+

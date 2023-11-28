@@ -72,7 +72,7 @@ public class For extends Statement
         String endLabel = "endwhile" + e.nextLabelID();
         String startLabel = "startwhile" + e.nextLabelID();
         e.emit(startLabel + ":", "Start for loop");
-        new Condition(new Variable(var.getVar()), end, "<=").compile(e, endLabel);
+        new Condition(new Variable(var.getVar()), end, "<").compile(e, endLabel);
         stmt.compile(e);
         new Assignment(var.getVar(),
                 new BinOp("+",

@@ -1,9 +1,19 @@
+VAR x, y;
 BEGIN
-IF 14 = 14 THEN
-BEGIN
-IF 14 <> 14 THEN WRITELN(3);
-IF 14 <= 14 THEN WRITELN(4);
-END;
-IF 15 > 14 THEN WRITELN(5);
+    x := 2;
+    y := x + 1;
+    x := x + y;
+    WRITELN(x * y);
+    IF x > y THEN
+    BEGIN
+        WRITELN(x);
+        WRITELN(y);
+    END;
+    x := 0;
+    WHILE x < 10 DO
+        BEGIN
+            WRITELN(x);
+            x := x + 1;
+        END;
 END;
 .

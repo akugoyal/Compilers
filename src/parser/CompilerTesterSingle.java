@@ -24,7 +24,7 @@ public class CompilerTesterSingle
      */
     public static void main(String[] args) throws ScanErrorException, InvalidOperator, IOException
     {
-        String fileName = "src/parser/tests/compilerTests/cases/parserTest11.txt";
+        String fileName = "src/parser/tests/compilerTests/cases/20.txt";
 
         Scanner s = new Scanner(new BufferedReader(new FileReader(fileName)));
         Parser p = new Parser(s, fileName);

@@ -1,6 +1,8 @@
-VAR x;
+VAR count;
+PROCEDURE add3();
+count := count + 3;
 BEGIN
-x := 5;
-EXIT;
-WRITELN(x);
+count := 2;
+ignore := add3();
+WRITELN(count);
 END;

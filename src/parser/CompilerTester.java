@@ -119,6 +119,8 @@ public class CompilerTester
         if (good)
         {
             System.out.println("\n\nEverything works!");
+        } else {
+            System.out.println("\n\nWork, everything does not >:(!");
         }
     }
 

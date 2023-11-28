@@ -1,10 +1,8 @@
-VAR x, y;
-PROCEDURE max(x, y);
+VAR x, n;
+PROCEDURE printSquare(n);
+WRITELN(n * n);
 BEGIN
-max := x;
-IF y > x THEN max := y;
-END;
-BEGIN
-WRITELN(max(3, 5));
+x := 1;
+ignore := printSquare(x + 2);
 END;
 .
