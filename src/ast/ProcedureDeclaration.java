@@ -1,5 +1,6 @@
 package ast;
 
+import emitter.Emitter;
 import environment.Environment;
 
 import java.util.*;
@@ -72,5 +73,23 @@ public class ProcedureDeclaration extends Statement
     public List<String> getParams()
     {
         return params;
+    }
+
+    @Override
+    public void compile(Emitter e) throws InvalidOperator
+    {
+        e.emit(name + ":", "");
+        for (int i = 0; i < Integer.min(4, params.size()); i++) {
+            e.emit("sw $a" + i + " var" + params.get(i), "Save argument to variable");
+        }
+        if (params.size() > 4) {
+            for (int i = 4; i < params.size(); i++) {
+                e.emitPop("$v0");
+                e.emit("sw $v0 var" + params.get(i), "Save argument from stack to variable");
+            }
+        }
+        stmt.compile(e);
+        new Variable(name).compile(e);
+        e.emit("jr $ra", "");
     }
 }

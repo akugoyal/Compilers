@@ -101,11 +101,17 @@ public class Program
         }
         e.emit("li $v0 10", "Normal termination");
         e.emit("syscall", "");
+        for (ProcedureDeclaration p : procs) {
+            p.compile(e);
+        }
         e.emit(".data", "");
         e.emitData("newLine", "asciiz", "\"\\n\"");
         for (String v : vars)
         {
-            e.emitData("var" + v, "word", " 0");
+            e.emitData("var" + v, "word", "0");
+        }
+        for (ProcedureDeclaration p : procs) {
+            e.emitData("var" + p.getName(), "word", "0");
         }
         e.close();
     }

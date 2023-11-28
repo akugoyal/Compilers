@@ -64,7 +64,6 @@ public class Variable extends Expression
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
-        e.emit("la $t0 var" + name, "");
-        e.emit("lw $v0 ($t0)", "load variable into $v0");
+        e.emit("lw $v0 var" + name, "load variable into $v0");
     }
 }

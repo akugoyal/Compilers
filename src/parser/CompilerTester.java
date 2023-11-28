@@ -30,7 +30,7 @@ public class CompilerTester
     public static void main(String[] args) throws IOException, ScanErrorException
     {
         double start = System.nanoTime();
-        String output = "stdout";               //set to "file" to test output and write to file
+        String output = "file";               //set to "file" to test output and write to file
 
         if (output.equals("stdout"))
         {
@@ -118,7 +118,7 @@ public class CompilerTester
 
         if (good)
         {
-            System.out.println("Everything works!");
+            System.out.println("\n\nEverything works!");
         }
     }
 

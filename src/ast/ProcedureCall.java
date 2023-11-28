@@ -1,5 +1,6 @@
 package ast;
 
+import emitter.Emitter;
 import environment.*;
 
 import java.util.*;
@@ -71,5 +72,26 @@ public class ProcedureCall extends Expression
         e.declareVariable(proc.getName(), 0);
         proc.exec(e);
         return e.getVariable(proc.getName());
+    }
+
+    @Override
+    public void compile(Emitter e) throws InvalidOperator
+    {
+        e.emitPush("$ra");
+
+        for (int i = 0; i < Integer.min(4, params.size()); i++) {
+            params.get(i).compile(e);
+            e.emit("move $a" + i + " $v0", "Store arguments");
+        }
+        if (params.size() > 4) {
+            for (int i = params.size() - 1; i > 3; i++) {
+                params.get(i).compile(e);
+                e.emitPush("$v0");
+            }
+        }
+
+        e.emit("jal " + name, "Call method");
+
+        e.emitPop("$ra");
     }
 }
