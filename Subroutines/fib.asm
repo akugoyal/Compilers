@@ -8,32 +8,34 @@ move $a0, $v0
 
 subu $sp, $sp, 4
 sw $ra, ($sp)
-jal fact
+jal fib
 lw $ra, ($sp)
 addu $sp, $sp, 4
 
-lw $a0, n
+move $a0, $v0
 li $v0, 1
 syscall
 li $v0, 10
 syscall
 
-fact:
-beq $a0, $zero, end
-lw $t0, n
-mult $t0, $a0
-mflo $t0
-sw $t0, n
-subu $a0, $a0, 1
+fib:
+bgt $a0, 1, continue
+move $v0, $a0
+jr $ra
+continue:
 subu $sp, $sp, 4
 sw $ra, ($sp)
-jal fact
+
+subu $a0, $a0, 1
+jal fib
+move $t0, $v0
+
+subu $a0, $a0, 1
+jal fib
+addu $a0, $a0, 2
+
+addu $v0, $v0, $t0
+
 lw $ra, ($sp)
 addu $sp, $sp, 4
 jr $ra
-
-end:
-jr $ra
-
-.data
-n: .word 1
