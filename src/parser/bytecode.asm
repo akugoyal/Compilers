@@ -3,14 +3,15 @@
 main:		# QTSPIM will automatically look for main
 	
 		# Begin block
-	li $v0 1		# load number
-	sw $v0 varx		# save v0 to x
 	subu $sp $sp 4
 	sw $ra ($sp)		# push $ra
-	jal foo		# Call method
+	li $v0 17		# load number
+	move $a0 $v0		# Store arguments
+	li $v0 19		# load number
+	move $a1 $v0		# Store arguments
+	jal max2		# Call method
 	lw $ra ($sp)
 	addu $sp $sp 4		# pop to $ra
-	lw $v0 varx		# load variable into $v0
 	move $a0, $v0
 	li $v0, 1
 	syscall		# print the value of the expression
@@ -21,31 +22,26 @@ main:		# QTSPIM will automatically look for main
 		# End block
 	li $v0 10		# Normal termination
 	syscall
-foo:
+max2:
+	sw $a0 varx		# Save argument to variable
+	sw $a1 vary		# Save argument to variable
 	
 		# Begin block
-	li $v0 2		# load number
-	sw $v0 varx		# save v0 to x
-	subu $sp $sp 4
-	sw $ra ($sp)		# push $ra
-	jal bar		# Call method
-	lw $ra ($sp)
-	addu $sp $sp 4		# pop to $ra
+	lw $v0 varx		# load variable into $v0
+	sw $v0 varmax2		# save v0 to max2
+	lw $v0 vary		# load variable into $v0
+	move $t0 $v0		# store first expression
+	lw $v0 varx		# load variable into $v0
+	ble $t0 $v0 endif1		# Condition: greater than
+	lw $v0 vary		# load variable into $v0
+	sw $v0 varmax2		# save v0 to max2
+endif1:		# exit if condition
 	
 		# End block
-	lw $v0 varfoo		# load variable into $v0
-	jr $ra
-bar:
-	
-		# Begin block
-	li $v0 3		# load number
-	sw $v0 varx		# save v0 to x
-	
-		# End block
-	lw $v0 varbar		# load variable into $v0
+	lw $v0 varmax2		# load variable into $v0
 	jr $ra
 	.data
 	newLine:	.asciiz	"\n"
 	varx:	.word	0
-	varfoo:	.word	0
-	varbar:	.word	0
+	vary:	.word	0
+	varmax2:	.word	0
