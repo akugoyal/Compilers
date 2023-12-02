@@ -5,11 +5,9 @@ main:		# QTSPIM will automatically look for main
 		# Begin block
 	subu $sp $sp 4
 	sw $ra ($sp)		# push $ra
-	li $v0 17		# load number
+	li $v0 4		# load number
 	move $a0 $v0		# Store arguments
-	li $v0 19		# load number
-	move $a1 $v0		# Store arguments
-	jal max2		# Call method
+	jal fib		# Call method
 	lw $ra ($sp)
 	addu $sp $sp 4		# pop to $ra
 	move $a0, $v0
@@ -22,26 +20,59 @@ main:		# QTSPIM will automatically look for main
 		# End block
 	li $v0 10		# Normal termination
 	syscall
-max2:
-	sw $a0 varx		# Save argument to variable
-	sw $a1 vary		# Save argument to variable
+fib:
+	sw $a0 varn		# Save argument to variable
 	
 		# Begin block
-	lw $v0 varx		# load variable into $v0
-	sw $v0 varmax2		# save v0 to max2
-	lw $v0 vary		# load variable into $v0
+	lw $v0 varn		# load variable into $v0
 	move $t0 $v0		# store first expression
-	lw $v0 varx		# load variable into $v0
-	ble $t0 $v0 endif1		# Condition: greater than
-	lw $v0 vary		# load variable into $v0
-	sw $v0 varmax2		# save v0 to max2
+	li $v0 1		# load number
+	bgt $t0 $v0 endif1		# Condition: less than or equal to
+	lw $v0 varn		# load variable into $v0
+	sw $v0 varfib		# save v0 to fib
 endif1:		# exit if condition
+	lw $v0 varn		# load variable into $v0
+	move $t0 $v0		# store first expression
+	li $v0 1		# load number
+	ble $t0 $v0 endif2		# Condition: greater than
+	subu $sp $sp 4
+	sw $ra ($sp)		# push $ra
+	li $v0 2		# load number
+	subu $sp $sp 4
+	sw $v0 ($sp)		# push $v0
+	lw $v0 varn		# load variable into $v0
+	lw $t0 ($sp)
+	addu $sp $sp 4		# pop to $t0
+	sub $v0 $v0 $t0		# subtraction
+	move $a0 $v0		# Store arguments
+	jal fib		# Call method
+	lw $ra ($sp)
+	addu $sp $sp 4		# pop to $ra
+	subu $sp $sp 4
+	sw $v0 ($sp)		# push $v0
+	subu $sp $sp 4
+	sw $ra ($sp)		# push $ra
+	li $v0 1		# load number
+	subu $sp $sp 4
+	sw $v0 ($sp)		# push $v0
+	lw $v0 varn		# load variable into $v0
+	lw $t0 ($sp)
+	addu $sp $sp 4		# pop to $t0
+	sub $v0 $v0 $t0		# subtraction
+	move $a0 $v0		# Store arguments
+	jal fib		# Call method
+	lw $ra ($sp)
+	addu $sp $sp 4		# pop to $ra
+	lw $t0 ($sp)
+	addu $sp $sp 4		# pop to $t0
+	add $v0 $v0 $t0		# addition
+	sw $v0 varfib		# save v0 to fib
+endif2:		# exit if condition
 	
 		# End block
-	lw $v0 varmax2		# load variable into $v0
+	lw $v0 varfib		# load variable into $v0
 	jr $ra
 	.data
 	newLine:	.asciiz	"\n"
-	varx:	.word	0
-	vary:	.word	0
-	varmax2:	.word	0
+	varn:	.word	0
+	varfib:	.word	0
