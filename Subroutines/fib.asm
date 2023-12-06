@@ -33,39 +33,36 @@ syscall				# Normal termination
 #----------------------------------------------------------------------------------
 # The fib function takes one integer, n, in a0 and returns the nth term of the Fibonacci series in v0
 fib:
-subu $sp, $sp, 4
+subu $sp, $sp, 12
 sw $ra, ($sp)
-#sw $s0, 4($sp)		# Push ra, s0
+sw $a0, 4($sp)
+sw $s0, 8($sp)
 
-# Base case
-li $v0, 1
-ble $a0, 1, done
+# Base Case
+blt $a0, 2, base
 
-#lw $ra, ($sp)
-#lw $v0, 4($sp)
-#addu $sp, $sp, 4	# Pop ra, v0
-
-#jr $ra
-#done:
+#-------------------
 subu $a0, $a0, 1
-jal fib
-move $t0, $v0		# Put fib(n-1) into t0
+jal fib	
+move $s0, $v0			#fib(n-1) into t0
 
 
 subu $a0, $a0, 1
-jal fib			# Put fib(n-2) in v0
+jal fib				#fib(n-2) into v0
+addu $v0, $v0, $s0
 
-addu $a0, $a0, 2
-addu $v0, $v0, $t0	# Return sum in v0
 
-done:
-#move $v0, $a0
+end:
+lw $s0, 8($sp)
 lw $ra, ($sp)
-#lw $v0, 4($sp)
-addu $sp, $sp, 4	# Pop ra, v0
+lw $a0, 4($sp)
+addu $sp, $sp, 12	#fib(n-2) into s0
 
 jr $ra
 
+base:
+move $v0, $a0
+j end
 
 .data
 in: .asciiz "Enter a number:"
