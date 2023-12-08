@@ -72,7 +72,12 @@ public class Assignment extends Statement
         exp.compile(e);
         if (!var.equals("ignore"))
         {
-            e.emit("sw $v0 var" + var, "save v0 to " + var);
+            if (e.isLocalVariable(var)) {
+                e.emit("sw $v0 " + e.getOffset(var) + "($sp)", "Store local variable onto stack");
+            } else
+            {
+                e.emit("sw $v0 var" + var, "save v0 to " + var);
+            }
         }
     }
 }

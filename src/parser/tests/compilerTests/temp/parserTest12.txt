@@ -1,2 +1,18 @@
-Error in /Users/akulgoyal/Desktop/Compilers/Compiler/src/parser/bytecode.asm line 120 column 9: Symbol "varw" not found in symbol table.
-
+15
+5
+3
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+3
+4
+10
+3
+14

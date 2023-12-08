@@ -18,6 +18,7 @@ public class ProcedureDeclaration extends Statement
     private String name;
     private Statement stmt;
     private List<String> params;
+    private List<String> vars;
 
     /**
      * Constructor for objects of class ProcedureDeclaration
@@ -26,8 +27,9 @@ public class ProcedureDeclaration extends Statement
      * @param s code to be executed when the procedure is called
      * @param p list of parameters the procedure expects
      */
-    public ProcedureDeclaration(String n, Statement s, List<String> p)
+    public ProcedureDeclaration(String n, Statement s, List<String> p, List<String> v)
     {
+        vars = v;
         name = n;
         stmt = s;
         params = p;
@@ -75,21 +77,45 @@ public class ProcedureDeclaration extends Statement
         return params;
     }
 
+    /**
+     * Returns the list of local variables declared by the procedure.
+     *
+     * @return the list of local variables the procedure declares.
+     */
+    public List<String> getLocalVars()
+    {
+        return vars;
+    }
+
+    /**
+     * Compiles the procedure declaration by pushing the return value, pushing the local
+     * variables, pushing the return address, compiling the code in the procedure, popping the
+     * return address, popping the return value, popping the local variables, and jumping to the
+     * return address.
+     *
+     * @param e the emitter that writes the code to a file
+     * @throws InvalidOperator if an invalid operator is used
+     */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
         e.emit(name + ":", "");
-        for (int i = 0; i < Integer.min(4, params.size()); i++) {
-            e.emit("sw $a" + i + " var" + params.get(i), "Save argument to variable");
+        e.emitPush("$zero");
+        e.setProcedureContext(this);
+        for (int i = 0; i < vars.size(); i++)
+        {
+            e.emitPush("$zero");
         }
-        if (params.size() > 4) {
-            for (int i = 4; i < params.size(); i++) {
-                e.emitPop("$v0");
-                e.emit("sw $v0 var" + params.get(i), "Save argument from stack to variable");
-            }
-        }
+        e.emitPush("$ra");
         stmt.compile(e);
-        new Variable(name).compile(e);
+        e.emitPop("$ra");
+        e.emitPop("$v0");
+        e.emit("", "Returned value for method");
+        for (int i = 0; i < vars.size(); i++)
+        {
+            e.emitPop("$t0");
+        }
         e.emit("jr $ra", "");
+        e.clearProcedureContext();
     }
 }

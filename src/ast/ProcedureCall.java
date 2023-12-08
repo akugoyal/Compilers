@@ -74,24 +74,26 @@ public class ProcedureCall extends Expression
         return e.getVariable(proc.getName());
     }
 
+    /**
+     * Compiles the procedure call by compiling each parameter and pushing it onto the stack. It
+     * then jumps and links to the procedure. After the procedure is done executing, it pops the
+     * parameters off the stack.
+     *
+     * @param e the emitter that writes the code to a file
+     * @throws InvalidOperator if an invalid operator is used
+     */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
-        e.emitPush("$ra");
-
-        for (int i = 0; i < Integer.min(4, params.size()); i++) {
+        for (int i = 0; i < params.size(); i++)
+        {
             params.get(i).compile(e);
-            e.emit("move $a" + i + " $v0", "Store arguments");
+            e.emitPush("$v0");
         }
-        if (params.size() > 4) {
-            for (int i = params.size() - 1; i > 3; i++) {
-                params.get(i).compile(e);
-                e.emitPush("$v0");
-            }
+        e.emit("jal " + name, "Procedure Call");
+        for (int i = 0; i < params.size(); i++)
+        {
+            e.emitPop("$t0");
         }
-
-        e.emit("jal " + name, "Call method");
-
-        e.emitPop("$ra");
     }
 }

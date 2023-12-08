@@ -46,11 +46,17 @@ public class If extends Statement
             }
             catch (ExitException ex)
             {
-                return;
             }
         }
     }
 
+    /**
+     * Compiles the if statement to MIPS code by compiling the condition, then statement and the
+     * else.
+     *
+     * @param e the emitter that writes the code to a file
+     * @throws InvalidOperator if the condition contains an invalid operator
+     */
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {

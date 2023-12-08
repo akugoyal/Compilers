@@ -69,10 +69,10 @@ public class For extends Statement
     public void compile(Emitter e) throws InvalidOperator
     {
         var.compile(e);
-        String endLabel = "endwhile" + e.nextLabelID();
-        String startLabel = "startwhile" + e.nextLabelID();
+        String endLabel = "endfor" + e.nextLabelID();
+        String startLabel = "startfor" + e.nextLabelID();
         e.emit(startLabel + ":", "Start for loop");
-        new Condition(new Variable(var.getVar()), end, "<").compile(e, endLabel);
+        new Condition(new Variable(var.getVar()), end, "<=").compile(e, endLabel);
         stmt.compile(e);
         new Assignment(var.getVar(),
                 new BinOp("+",

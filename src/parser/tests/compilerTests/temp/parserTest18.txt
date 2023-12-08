@@ -1,2 +1,12 @@
-Error in /Users/akulgoyal/Desktop/Compilers/Compiler/src/parser/bytecode.asm line 31 column 9: Symbol "vari" not found in symbol table.
-
+5
+3
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10

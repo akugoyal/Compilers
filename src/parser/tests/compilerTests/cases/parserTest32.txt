@@ -3,7 +3,6 @@ PROCEDURE foo(x, y);
     BEGIN
         x := x + 5;
         WRITELN(x);
-        EXIT;
         WRITELN(y);
     END;
 

@@ -56,7 +56,8 @@ public class Variable extends Expression
     }
 
     /**
-     * Compiles the variable into MIPS assembly code
+     * Compiles the variable into MIPS assembly code. If the variable is a local variable, it is
+     * loaded from the stack.
      *
      * @param e the emitter that writes the code to a file
      * @throws InvalidOperator if the variable is not found
@@ -64,6 +65,13 @@ public class Variable extends Expression
     @Override
     public void compile(Emitter e) throws InvalidOperator
     {
-        e.emit("lw $v0 var" + name, "load variable into $v0");
+        if (e.isLocalVariable(name))
+        {
+            e.emit("lw $v0 " + e.getOffset(name) + "($sp)", "Load local variable into $v0");
+        }
+        else
+        {
+            e.emit("lw $v0 var" + name, "Load variable into $v0");
+        }
     }
 }

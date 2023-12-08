@@ -110,6 +110,5 @@ public class BinOp extends Expression
             default:
                 throw new InvalidOperator(op + " is not a valid operator.");
         }
-
     }
 }

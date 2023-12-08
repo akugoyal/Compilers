@@ -358,33 +358,11 @@ public class Parser
      */
     public Program parseProgram() throws ScanErrorException
     {
-        LinkedList<String> vars = new LinkedList<String>();
-        if (current.getToken().equals("VAR"))
-        {
-            eat("VAR");
-            while (!current.getToken().equals(";"))
-            {
-                vars.add(current.getToken());
-                eat(current.getToken());
-            }
-            eat(";");
-        }
+        LinkedList<String> vars = parseVars();
         LinkedList<ProcedureDeclaration> procs = new LinkedList<ProcedureDeclaration>();
         while (current.getToken().equals("PROCEDURE"))
         {
-            eat("PROCEDURE");
-            String name = current.getToken();
-            eat(name);
-            eat("(");
-            LinkedList<String> p = new LinkedList<String>();
-            while (!current.getToken().equals(")"))
-            {
-                p.add(current.getToken());
-                eat(current.getToken());
-            }
-            eat(")");
-            eat(";");
-            procs.add(new ProcedureDeclaration(name, parseStatement(), p));
+            procs.add(parseProcedureDeclaration());
         }
         if (procs.size() == 0)
         {
@@ -399,5 +377,51 @@ public class Parser
         Statement stmt = parseStatement();
         eat("EOF");
         return new Program(procs, stmt, vars);
+    }
+
+    /**
+     * Parses a procedure declaration and returns it.
+     *
+     * @return the ProcedureDeclaration object representing the procedure declaration
+     * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
+     */
+    private ProcedureDeclaration parseProcedureDeclaration() throws ScanErrorException
+    {
+        eat("PROCEDURE");
+        String name = current.getToken();
+        eat(name);
+        eat("(");
+        LinkedList<String> p = new LinkedList<String>();
+        while (!current.getToken().equals(")"))
+        {
+            p.add(current.getToken());
+            eat(current.getToken());
+        }
+        eat(")");
+        eat(";");
+        LinkedList<String> vars = parseVars();
+        return new ProcedureDeclaration(name, parseStatement(), p, vars);
+    }
+
+    /**
+     * Parses a list of variables declared by the "VAR" keyword and returns it.
+     *
+     * @return the list of variables declared by the "VAR" keyword
+     * @throws ScanErrorException if the Scanner object encounters an invalid character or an error
+     */
+    private LinkedList<String> parseVars() throws ScanErrorException
+    {
+        LinkedList<String> vars = new LinkedList<String>();
+        if (current.getToken().equals("VAR"))
+        {
+            eat("VAR");
+            while (!current.getToken().equals(";"))
+            {
+                vars.add(current.getToken());
+                eat(current.getToken());
+            }
+            eat(";");
+        }
+        return vars;
     }
 }

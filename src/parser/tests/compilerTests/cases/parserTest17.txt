@@ -1,5 +1,3 @@
-VAR x, y;
-
 PROCEDURE max2(x, y);
 BEGIN
 max2 := x;
