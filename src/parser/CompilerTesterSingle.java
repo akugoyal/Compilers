@@ -26,23 +26,7 @@ public class CompilerTesterSingle
      */
     public static void main(String[] args) throws ScanErrorException, InvalidOperator, IOException
     {
-        String fileName = "src/parser/tests/compilerTests/cases/parserTest20.txt";
-//        byte[] bArr = Files.readAllBytes(new File(fileName).toPath());
-//        System.out.println(Arrays.toString(bArr));
-//        for (int i = 20; i < 30; i++) {
-//            System.out.println(bArr[i]);
-//        }
-//        BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
-//        for (byte b : bArr) {
-//            if (b != 13) {
-//                bw.write(new String(String.valueOf((char)b)));
-//            }
-//        }
-//        bw.flush();
-//        bw.close();
-//        System.out.println(Arrays.toString(Files.readAllBytes(new File(fileName).toPath())));
-//        System.exit(0);
-//
+        String fileName = "src/parser/tests/compilerTests/cases/parserTest12.txt";
         Scanner s = new Scanner(new BufferedReader(new FileReader(fileName)));
         Parser p = new Parser(s, fileName);
         Program prog = p.parseProgram();

@@ -92,6 +92,11 @@ public class Program
     {
         new FileWriter(fileName, false).close();
         Emitter e = new Emitter(fileName);
+        e.emit("# This is an auto generated MIPS file from PASCAL source code.", "");
+        e.emit("", "");
+        e.emit("# Author: Akul Goyal", "");
+        e.emit("# Version: " + java.time.LocalDate.now(), "");
+        e.emit("", "");
         e.emit(".text", "");
         e.emit(".globl main", "");
         e.emit("main:", "QTSPIM will automatically look for main");

@@ -30,7 +30,7 @@ public class ParserTesterSingle
     public static void main(String[] args) throws InvalidOperator, ContinueException,
             BreakException, ArgumentMismatchException, ScanErrorException, FileNotFoundException
     {
-        int testNum = 20;
+        int testNum = 12;
         String fileName = "src/parser/tests/parserTests/cases/parserTest" + testNum + ".txt";
 
         Scanner s = new Scanner(new BufferedReader(new FileReader(fileName)));
