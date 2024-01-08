@@ -40,8 +40,9 @@ public class Assignment extends Statement
     public void exec(Environment env) throws InvalidOperator, ContinueException, BreakException,
             ArgumentMismatchException
     {
-        if (!var.equals("ignore"))
+        if (!(exp instanceof ProcedureCall))
         {
+
             env.setVariable(var, exp.eval(env));
         }
         else

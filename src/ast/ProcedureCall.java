@@ -30,8 +30,9 @@ public class ProcedureCall extends Expression
     }
 
     /**
-     * Evaluates the procedure call by creating a new environment and declaring the parameters in
-     * the new environment. It then executes the procedure in the new environment.
+     * Evaluates the procedure call by creating a new environment and declaring the parameters
+     * and local variables in the new environment. It then executes the procedure in the new
+     * environment.
      *
      * @param env the environment in which the procedure was called
      * @return 0 or the return value of the procedure
@@ -68,6 +69,11 @@ public class ProcedureCall extends Expression
             {
                 e.declareVariable(vars.get(i), params.get(i).eval(env));
             }
+        }
+        List<String> localVars = proc.getLocalVars();
+        for (String var : localVars)
+        {
+            e.declareVariable(var, 0);
         }
         e.declareVariable(proc.getName(), 0);
         proc.exec(e);
